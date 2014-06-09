@@ -1,6 +1,7 @@
 package entidades;
 
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,8 +14,9 @@ public class ArvoreQuad extends Pagina
 	Pagina sulOeste;
 	Pagina sulLeste;
 	
-	public ArvoreQuad(Integer xMinimo,Integer xMaximo,Integer yMinimo,Integer yMaximo)
+	public ArvoreQuad(Integer xMinimo,Integer xMaximo,Integer yMinimo,Integer yMaximo) throws RemoteException
 	{
+		super();
 		this.y = yMinimo + yMaximo / 2;
 		this.x = xMinimo + xMaximo / 2;
 		this.xMaximo = xMaximo;
@@ -64,7 +66,7 @@ public class ArvoreQuad extends Pagina
 		this.sulLeste = sulLeste;
 	}
 	
-	public void add(Pagina pagina)
+	public void add(Pagina pagina) throws RemoteException
 	{
 		
 		if(pagina.getY() > getY() && pagina.getX() > getX())
@@ -166,7 +168,7 @@ public class ArvoreQuad extends Pagina
 		}
 	}
 	
-	public void add(Collection<Pagina> paginas)
+	public void add(Collection<Pagina> paginas) throws RemoteException
 	{
 		for (Pagina pagina : paginas)
 		{

@@ -1,5 +1,7 @@
 package entidades;
 
+import java.rmi.RemoteException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,6 +9,10 @@ import eo.DirecaoEnum;
 
 public class Corpo extends Pagina
 {	
+	public Corpo() throws RemoteException
+	{
+		super();		
+	}
 	Float massa;
 	Float forca;
 	Float velocidade;
