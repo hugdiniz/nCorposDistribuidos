@@ -1,16 +1,13 @@
 package entidades;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 import org.json.JSONArray;
 
-public abstract class Pagina extends UnicastRemoteObject implements Remote {
+public abstract class Pagina 
+{
 
-	public Pagina() throws RemoteException
+	public Pagina() 
 	{
-		super();		
+			
 	}
 	protected Integer xMinimo,xMaximo,x,yMinimo,yMaximo,y;
 	

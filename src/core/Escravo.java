@@ -1,27 +1,26 @@
 package core;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-
-import entidades.ArvoreQuad;
+import java.net.Socket;
+import socket.escravo.SocketEscravoControle;
 
 public class Escravo 
 {
 	public static void main(String[] args)	
 	{
-		ArvoreQuad arvoreQuad;
-		try
-		{
-			arvoreQuad = (ArvoreQuad) Naming.lookup( "rmi://localhost/ArvoreQuad" );
-			arvoreQuad.print();     
-		}
-		catch (MalformedURLException | RemoteException | NotBoundException e)
-		{
-			e.printStackTrace();
-		}  
-              
+		Socket s = null;
+        try
+        {                
+            //Cria o socket com o recurso desejado na porta especificada  
+            s = new Socket("127.0.0.1",7000);  
+            SocketEscravoControle socketEscravoControle = new SocketEscravoControle(s);	            
+            Thread thread = new Thread(socketEscravoControle);
+            thread.start();
+           
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
 	}
 }
 

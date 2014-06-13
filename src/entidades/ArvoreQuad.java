@@ -16,7 +16,6 @@ public class ArvoreQuad extends Pagina
 	
 	public ArvoreQuad(Integer xMinimo,Integer xMaximo,Integer yMinimo,Integer yMaximo) throws RemoteException
 	{
-		super();
 		this.y = yMinimo + yMaximo / 2;
 		this.x = xMinimo + xMaximo / 2;
 		this.xMaximo = xMaximo;
@@ -25,7 +24,7 @@ public class ArvoreQuad extends Pagina
 		this.yMinimo = yMinimo;
 	}
 	
-	public Object getNorteOeste()
+	public Pagina getNorteOeste()
 	{
 		return norteOeste;
 	}
@@ -36,7 +35,7 @@ public class ArvoreQuad extends Pagina
 	}
 	
 	
-	public Object getNorteLeste()
+	public Pagina getNorteLeste()
 	{
 		return norteLeste;
 	}
@@ -46,7 +45,7 @@ public class ArvoreQuad extends Pagina
 		this.norteLeste = norteLeste;
 	}	
 	
-	public Object getSulOeste() 
+	public Pagina getSulOeste() 
 	{
 		return sulOeste;
 	}	
@@ -56,7 +55,7 @@ public class ArvoreQuad extends Pagina
 		this.sulOeste = sulOeste;
 	}
 	
-	public Object getSulLeste()
+	public Pagina getSulLeste()
 	{
 		return sulLeste;
 	}	
