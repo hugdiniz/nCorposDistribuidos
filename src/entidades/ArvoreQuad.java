@@ -1,21 +1,21 @@
 package entidades;
 
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.json.JSONArray;
 
-public class ArvoreQuad extends Pagina
-{	
+import eo.DirecaoEnum;
+
+public class ArvoreQuad extends Pagina {
 	Pagina norteOeste;
 	Pagina norteLeste;
 	Pagina sulOeste;
 	Pagina sulLeste;
-	
-	public ArvoreQuad(Integer xMinimo,Integer xMaximo,Integer yMinimo,Integer yMaximo) throws RemoteException
-	{
+
+	public ArvoreQuad(Integer xMinimo, Integer xMaximo, Integer yMinimo,
+			Integer yMaximo) throws RemoteException {
 		this.y = yMinimo + yMaximo / 2;
 		this.x = xMinimo + xMaximo / 2;
 		this.xMaximo = xMaximo;
@@ -23,260 +23,226 @@ public class ArvoreQuad extends Pagina
 		this.yMaximo = yMaximo;
 		this.yMinimo = yMinimo;
 	}
-	
-	public Pagina getNorteOeste()
-	{
+
+	public Pagina getNorteOeste() {
 		return norteOeste;
 	}
-	
-	public void setNorteOeste(Pagina norteOeste) 
-	{
+
+	public void setNorteOeste(Pagina norteOeste) {
 		this.norteOeste = norteOeste;
 	}
-	
-	
-	public Pagina getNorteLeste()
-	{
+
+	public Pagina getNorteLeste() {
 		return norteLeste;
 	}
-	
-	public void setNorteLeste(Pagina norteLeste) 
-	{
+
+	public void setNorteLeste(Pagina norteLeste) {
 		this.norteLeste = norteLeste;
-	}	
-	
-	public Pagina getSulOeste() 
-	{
+	}
+
+	public Pagina getSulOeste() {
 		return sulOeste;
-	}	
-	
-	public void setSulOeste(Pagina sulOeste)
-	{
+	}
+
+	public void setSulOeste(Pagina sulOeste) {
 		this.sulOeste = sulOeste;
 	}
-	
-	public Pagina getSulLeste()
-	{
+
+	public Pagina getSulLeste() {
 		return sulLeste;
-	}	
-	
-	public void setSulLeste(Pagina sulLeste) 
-	{
+	}
+
+	public void setSulLeste(Pagina sulLeste) {
 		this.sulLeste = sulLeste;
 	}
-	
-	public void add(Pagina pagina) throws RemoteException
-	{
-		
-		if(pagina.getY() > getY() && pagina.getX() > getX())
-		{
-			if (sulLeste != null)
-			{
-				if (sulLeste instanceof ArvoreQuad) 
-				{
-					((ArvoreQuad) sulLeste).add(pagina);				
-				}
-				else
-				{
+
+	public void add(Pagina pagina) throws RemoteException {
+
+		if (pagina.getY() > getY() && pagina.getX() > getX()) {
+			if (sulLeste != null) {
+				if (sulLeste instanceof ArvoreQuad) {
+					((ArvoreQuad) sulLeste).add(pagina);
+				} else {
 					Collection<Pagina> objetos = new ArrayList<Pagina>();
 					objetos.add(pagina);
 					objetos.add(sulLeste);
-					
-					sulLeste = new ArvoreQuad(getX(),getXMaximo(),getY(),getYMaximo());
+
+					sulLeste = new ArvoreQuad(getX(), getXMaximo(), getY(),
+							getYMaximo());
 					((ArvoreQuad) sulLeste).add(objetos);
-				}	
-			}
-			else
-			{
-				sulLeste = pagina;
-			}	
-		}
-		else if(pagina.getY() > getY() && pagina.getX() <= getX())
-		{
-			if (sulOeste != null)
-			{
-				if (sulOeste instanceof ArvoreQuad) 
-				{
-					((ArvoreQuad) sulOeste).add(pagina);				
 				}
-				else
-				{
+			} else {
+				sulLeste = pagina;
+			}
+		} else if (pagina.getY() > getY() && pagina.getX() <= getX()) {
+			if (sulOeste != null) {
+				if (sulOeste instanceof ArvoreQuad) {
+					((ArvoreQuad) sulOeste).add(pagina);
+				} else {
 					Collection<Pagina> objetos = new ArrayList<Pagina>();
 					objetos.add(pagina);
 					objetos.add(sulOeste);
-					
-					sulOeste = new ArvoreQuad(getXMinimo(),getX(),getY(),getYMaximo());
+
+					sulOeste = new ArvoreQuad(getXMinimo(), getX(), getY(),
+							getYMaximo());
 					((ArvoreQuad) sulOeste).add(objetos);
-				}	
-			}
-			else
-			{
-				sulOeste = pagina;
-			}	
-		}
-		else if(pagina.getY() <= getY() && pagina.getX() > getX())
-		{
-			if (norteLeste != null)
-			{
-				if (norteLeste instanceof ArvoreQuad) 
-				{
-						((ArvoreQuad) norteLeste).add(pagina);			
 				}
-				else
-				{
+			} else {
+				sulOeste = pagina;
+			}
+		} else if (pagina.getY() <= getY() && pagina.getX() > getX()) {
+			if (norteLeste != null) {
+				if (norteLeste instanceof ArvoreQuad) {
+					((ArvoreQuad) norteLeste).add(pagina);
+				} else {
 					Collection<Pagina> objetos = new ArrayList<Pagina>();
 					objetos.add(pagina);
 					objetos.add(norteLeste);
-					
-					norteLeste = new ArvoreQuad(getXMinimo(),getX(),getY(),getYMaximo());
+
+					norteLeste = new ArvoreQuad(getXMinimo(), getX(), getY(),
+							getYMaximo());
 					((ArvoreQuad) norteLeste).add(objetos);
-				}	
-			}
-			else
-			{
-				norteLeste = pagina;
-			}	
-		}
-		else if(pagina.getY() <= getY() && pagina.getX() <= getX())
-		{
-			if (norteOeste != null)
-			{
-				if (norteOeste instanceof ArvoreQuad) 
-				{
-							((ArvoreQuad) norteOeste).add(pagina);		
 				}
-				else
-				{
+			} else {
+				norteLeste = pagina;
+			}
+		} else if (pagina.getY() <= getY() && pagina.getX() <= getX()) {
+			if (norteOeste != null) {
+				if (norteOeste instanceof ArvoreQuad) {
+					((ArvoreQuad) norteOeste).add(pagina);
+				} else {
 					Collection<Pagina> objetos = new ArrayList<Pagina>();
 					objetos.add(pagina);
 					objetos.add(norteOeste);
-					
-					norteOeste = new ArvoreQuad(getXMinimo(),getX(),getYMinimo(),getY());
+
+					norteOeste = new ArvoreQuad(getXMinimo(), getX(),
+							getYMinimo(), getY());
 					((ArvoreQuad) norteOeste).add(objetos);
-				}	
-			}
-			else
-			{
+				}
+			} else {
 				norteOeste = pagina;
 			}
-		}
-		else
-		{
+		} else {
 			System.err.println("Erro");
-			System.err.println("getY:" + getY() + " pagina.getY():" + pagina.getY() +  " getX:" +getX() + " pagina.getX():" +pagina.getX());
+			System.err.println("getY:" + getY() + " pagina.getY():"
+					+ pagina.getY() + " getX:" + getX() + " pagina.getX():"
+					+ pagina.getX());
 		}
 	}
-	
-	public void add(Collection<Pagina> paginas) throws RemoteException
-	{
-		for (Pagina pagina : paginas)
-		{
+
+	public void add(Collection<Pagina> paginas) throws RemoteException {
+		for (Pagina pagina : paginas) {
 			add(pagina);
 		}
 	}
-	
-	public void print()
-	{
+
+	// Move o Corpo na prórpia árvore, ou desloca para um outro processo
+	public boolean deslocaCorpo(Corpo corpo) {
+
+		// Quando o sentido do corpo é SUL e corpo.getY é menor yMinimo, significa que o corpo entrou em uma região 
+		//fora do controle desse nó da árvore
+		if (corpo.getSentido() == DirecaoEnum.SUL && corpo.getY() < getYMinimo()) {
+
+			
+		}
+		
+		// Quando o sentido do corpo é NORTE e corpo.getY é maior yMaximo, significa que o corpo entrou em uma região 
+		//fora do controle desse nó da árvore
+		if (corpo.getSentido() == DirecaoEnum.NORTE && corpo.getY() > getYMaximo()) {
+
+			
+		}
+
+		// Quando o sentido do corpo é OESTE e corpo.getX é menor XMinimo, significa que o corpo entrou em uma região 
+		//fora do controle desse nó da árvore
+		if (corpo.getSentido() == DirecaoEnum.OESTE && corpo.getX() < getXMinimo()) {
+
+			
+		}
+		
+		// Quando o sentido do corpo é LESTE e corpo.getX é maior xMaximo, significa que o corpo entrou em uma região 
+		//fora do controle desse nó da árvore
+		if (corpo.getSentido() == DirecaoEnum.LESTE && corpo.getX() > getXMaximo()) {
+
+			
+		}
+
+		return false;
+	}
+
+	public void print() {
 		System.out.println(toString());
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		StringBuffer string = new StringBuffer();
-		if (norteOeste != null)
-		{
-			string.append("NorteOeste:{ "+ norteOeste.toString() + " }");
-		}
-		else
-		{
+		if (norteOeste != null) {
+			string.append("NorteOeste:{ " + norteOeste.toString() + " }");
+		} else {
 			string.append("NorteOeste:{  }");
 		}
-		
-		if (norteLeste != null)
-		{
-			string.append("NorteLeste:{ "+ norteLeste.toString() + " }");
-		}
-		else
-		{
+
+		if (norteLeste != null) {
+			string.append("NorteLeste:{ " + norteLeste.toString() + " }");
+		} else {
 			string.append("NorteLeste:{  }");
 		}
-		
-		if (sulOeste != null)
-		{
-			string.append("SulOeste:{ "+ sulOeste.toString() + " }");
-		}
-		else
-		{
+
+		if (sulOeste != null) {
+			string.append("SulOeste:{ " + sulOeste.toString() + " }");
+		} else {
 			string.append("SulOeste:{  }");
 		}
-	
-		if (sulLeste != null)
-		{
-			string.append("SulLeste:{ "+ sulLeste.toString() + " }");
-		}
-		else
-		{
+
+		if (sulLeste != null) {
+			string.append("SulLeste:{ " + sulLeste.toString() + " }");
+		} else {
 			string.append("SulLeste:{  }");
 		}
-		
+
 		return string.toString();
 	}
-	
+
 	@Override
-	public JSONArray toJsonArray()
-	{
+	public JSONArray toJsonArray() {
 		JSONArray jsonArray = new JSONArray();
-		
-		for (Corpo corpo : getCorpos())
-		{
+
+		for (Corpo corpo : getCorpos()) {
 			jsonArray.put(corpo.toJsonArray());
 		}
-		
+
 		return jsonArray;
 	}
-	
-	public Collection<Corpo> getCorpos() 
-	{
+
+	public Collection<Corpo> getCorpos() {
 		Collection<Corpo> corpos = new ArrayList();
-		
-		if (norteLeste instanceof Corpo) 
-		{
+
+		if (norteLeste instanceof Corpo) {
 			corpos.add((Corpo) norteLeste);
-		}
-		else if(norteLeste instanceof ArvoreQuad)
-		{
+		} else if (norteLeste instanceof ArvoreQuad) {
 			corpos.addAll(((ArvoreQuad) norteLeste).getCorpos());
 		}
-		
-		if (norteOeste instanceof Corpo) 
-		{
+
+		if (norteOeste instanceof Corpo) {
 			corpos.add((Corpo) norteOeste);
-		}
-		else if(norteOeste instanceof ArvoreQuad)
-		{
+		} else if (norteOeste instanceof ArvoreQuad) {
 			corpos.addAll(((ArvoreQuad) norteOeste).getCorpos());
 		}
-		
-		if (sulOeste instanceof Corpo) 
-		{
+
+		if (sulOeste instanceof Corpo) {
 			corpos.add((Corpo) sulOeste);
-		}
-		else if(sulOeste instanceof ArvoreQuad)
-		{
+		} else if (sulOeste instanceof ArvoreQuad) {
 			corpos.addAll(((ArvoreQuad) sulOeste).getCorpos());
 		}
-		
-		if (sulLeste instanceof Corpo) 
-		{
+
+		if (sulLeste instanceof Corpo) {
 			corpos.add((Corpo) sulLeste);
-		}
-		else if(sulLeste instanceof ArvoreQuad)
-		{
+		} else if (sulLeste instanceof ArvoreQuad) {
 			corpos.addAll(((ArvoreQuad) sulLeste).getCorpos());
 		}
-		
+
 		return corpos;
 	}
-	
+
 }

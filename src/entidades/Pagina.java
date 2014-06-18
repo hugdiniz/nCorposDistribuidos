@@ -1,4 +1,4 @@
-package entidades;
+ package entidades;
 
 import org.json.JSONArray;
 

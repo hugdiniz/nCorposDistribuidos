@@ -1,0 +1,82 @@
+NorteOeste:
+{ 
+	NorteOeste:
+	{ 
+		NorteOeste:
+		{ 
+			NorteOeste:
+			{ 
+				NorteOeste:
+				{ 
+					NorteOeste:
+					{ 
+						NorteOeste:
+						{ 
+							NorteOeste:
+							{ 
+								NorteOeste:
+								{
+									X:{ 0 }
+									Y:{ 1 }
+									Forca:{ 0.0 }
+									Velocidade:{ 0.0 }
+									Massa:{ 2.0 }
+								}
+								NorteLeste:
+								{ }
+								SulOeste:
+								{ 
+									X:{ 1 }
+									Y:{ 2 }
+									Forca:{ 0.0 }
+									Velocidade:{ 5.0 }
+									Massa:{ 2.0 } 
+								}
+								SulLeste:{  } 
+							}
+							NorteLeste:
+							{
+								X:{ 5 }
+								Y:{ 2 }
+								Forca:{ 0.0 }
+								Velocidade:{ 5.0 }
+								Massa:{ 2.0 }
+							}
+							SulOeste:{  }
+							SulLeste:{  }
+						}
+						NorteLeste:
+						{
+							X:{ 15 }
+							Y:{ 1 }
+							Forca:{ 0.0 }
+							Velocidade:{ 0.0 }
+							Massa:{ 2.0 }
+						}
+						SulOeste:{  }
+						SulLeste:{  }
+					}
+					NorteLeste:{  }
+					SulOeste:{  }
+					SulLeste:{  }
+				}
+				NorteLeste:{  }
+				SulOeste:{  }
+				SulLeste:{  }
+			}
+			NorteLeste:{  }
+			SulOeste:{  }
+			SulLeste:{  }
+		}
+		NorteLeste:{  }
+		SulOeste:{  }
+		SulLeste:{  }
+	}
+	NorteLeste:{  }
+	SulOeste:{  }
+	SulLeste:{  }
+}
+NorteLeste:{  }
+SulOeste:{  }
+SulLeste:{  }
+

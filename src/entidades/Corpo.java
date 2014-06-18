@@ -8,11 +8,52 @@ import eo.DirecaoEnum;
 
 public class Corpo extends Pagina
 {
-	Float massa;
-	Float forca;
-	Float velocidade;
-	DirecaoEnum sentido;
+	private Float massa;
+	private Float forca;
+	private Float velocidade;
+	private DirecaoEnum sentido;
+		
 	
+	public void calcDeslocamento(Integer T){
+		
+		Float deslocamento;
+		Float aceleracao;
+		
+		aceleracao = forca/massa;
+		
+		deslocamento =  ((velocidade * T) + ((aceleracao * (T*T))/2));
+		
+		//Atualizando a posicao do Corpo
+		atualizaPosicao(deslocamento);
+		
+	}
+	
+	
+	public void atualizaPosicao(Float deslocamento){
+		
+		//Quando é NORTE ou SUL significa que apenas irá mexer no Y, ou seja na VERTICAL 
+		if (sentido == DirecaoEnum.SUL || sentido == DirecaoEnum.NORTE){
+			
+			//Tem que verifica com o Hugo como funcionara essa atualização de Y
+			
+			//Adicionar um método que verifica se o corpo saiu do Nó o qual pertence
+		}
+		
+		//Quando é LESTE ou OESTE significa que apenas irá mexer no X, ou seja na HORIZONTAL 
+		if(sentido == DirecaoEnum.LESTE || sentido == DirecaoEnum.OESTE){
+			
+			//Tem que verifica com o Hugo como funcionara essa atualização de X
+			
+			//Adicionar um método que verifica se o corpo saiu do Nó o qual pertence
+		}
+	
+	}
+	
+	//Verificar se o corpo saiu do Nó o qual pertence, para deslocar o corpo para outro nó,
+	//ou para outro processo 
+	public boolean verficarPosicao(){
+		return false;
+	}
 	
 	public DirecaoEnum getSentido()
 	{
