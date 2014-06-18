@@ -31,18 +31,19 @@ public class Servico
 			/*
 			 * Json e composto por: X, Y, massa, forca, velocidade, direcao
 			 */
-			corpo.setX(jsonArray.getInt(0));
-			corpo.setY(jsonArray.getInt(1));
-			corpo.setMassa(Float.parseFloat(jsonArray.get(2).toString()));
-			corpo.setForca(Float.parseFloat(jsonArray.get(3).toString()));
-			corpo.setVelocidade(Float.parseFloat(jsonArray.get(4).toString()));
+			corpo.setX(Double.parseDouble((jsonArray.get(0).toString())));
+			corpo.setY(Double.parseDouble(jsonArray.get(1).toString()));
+			corpo.setMassa(Double.parseDouble(jsonArray.get(2).toString()));
+			corpo.setForca(Double.parseDouble(jsonArray.get(3).toString()));
+			corpo.setVelocidade(Double.parseDouble(jsonArray.get(4).toString()));
 			corpo.setSentido(DirecaoEnum.valueOf(jsonArray.getString(5)));
 			corpos.add(corpo);
 		}
 		/*
 		 * TODO: Criar uma heuristica para gerar dinamicamente o limite do campo da arvore quad
 		 */
-		ArvoreQuad arvoreQuad = new ArvoreQuad(0, 1000, 0, 1000);		
+		
+		ArvoreQuad arvoreQuad = new ArvoreQuad(0.0, 1000.0, 0.0, 1000.0);	
 		arvoreQuad.add(corpos);
 		arvoreQuad.print();
 		return arvoreQuad;		

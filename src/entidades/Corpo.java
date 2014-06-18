@@ -8,52 +8,23 @@ import eo.DirecaoEnum;
 
 public class Corpo extends Pagina
 {
-	private Float massa;
-	private Float forca;
-	private Float velocidade;
+	private Double massa;
+	private Double forca;
+	private Double velocidade;
 	private DirecaoEnum sentido;
+	private Double deslocamento;
 		
 	
 	public void calcDeslocamento(Integer T){
 		
-		Float deslocamento;
-		Float aceleracao;
+		Double aceleracao;
 		
 		aceleracao = forca/massa;
 		
 		deslocamento =  ((velocidade * T) + ((aceleracao * (T*T))/2));
-		
-		//Atualizando a posicao do Corpo
-		atualizaPosicao(deslocamento);
-		
+				
 	}
 	
-	
-	public void atualizaPosicao(Float deslocamento){
-		
-		//Quando é NORTE ou SUL significa que apenas irá mexer no Y, ou seja na VERTICAL 
-		if (sentido == DirecaoEnum.SUL || sentido == DirecaoEnum.NORTE){
-			
-			//Tem que verifica com o Hugo como funcionara essa atualização de Y
-			
-			//Adicionar um método que verifica se o corpo saiu do Nó o qual pertence
-		}
-		
-		//Quando é LESTE ou OESTE significa que apenas irá mexer no X, ou seja na HORIZONTAL 
-		if(sentido == DirecaoEnum.LESTE || sentido == DirecaoEnum.OESTE){
-			
-			//Tem que verifica com o Hugo como funcionara essa atualização de X
-			
-			//Adicionar um método que verifica se o corpo saiu do Nó o qual pertence
-		}
-	
-	}
-	
-	//Verificar se o corpo saiu do Nó o qual pertence, para deslocar o corpo para outro nó,
-	//ou para outro processo 
-	public boolean verficarPosicao(){
-		return false;
-	}
 	
 	public DirecaoEnum getSentido()
 	{
@@ -64,29 +35,34 @@ public class Corpo extends Pagina
 		this.sentido = sentido;
 	}	
 	
-	public Float getMassa() 
+	public Double getMassa() 
 	{
 		return massa;
 	}
-	public void setMassa(Float massa)
+	public void setMassa(Double massa)
 	{
 		this.massa = massa;
 	}
-	public Float getForca()
+	public Double getForca()
 	{
 		return forca;
 	}
-	public void setForca(Float forca)
+	public void setForca(Double forca)
 	{
 		this.forca = forca;
 	}
-	public Float getVelocidade()
+	public Double getVelocidade()
 	{
 		return velocidade;
 	}
-	public void setVelocidade(Float velocidade)
+	public void setVelocidade(Double velocidade)
 	{
 		this.velocidade = velocidade;
+	}
+	
+	public Double getDeslocamento(){
+		
+		return this.deslocamento;
 	}
 	
 	@Override

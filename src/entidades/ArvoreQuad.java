@@ -14,8 +14,8 @@ public class ArvoreQuad extends Pagina {
 	Pagina sulOeste;
 	Pagina sulLeste;
 
-	public ArvoreQuad(Integer xMinimo, Integer xMaximo, Integer yMinimo,
-			Integer yMaximo) throws RemoteException {
+	public ArvoreQuad(Double xMinimo, Double xMaximo, Double yMinimo,
+			Double yMaximo) throws RemoteException {
 		this.y = yMinimo + yMaximo / 2;
 		this.x = xMinimo + xMaximo / 2;
 		this.xMaximo = xMaximo;
@@ -136,6 +136,77 @@ public class ArvoreQuad extends Pagina {
 		}
 	}
 
+	public void atualizaPosicaoCorpo(Corpo corpo){
+		
+		//Quando é SUL significa que apenas irá mexer no Y, ou seja na VERTICAL 
+		if (corpo.getSentido() == DirecaoEnum.SUL){
+			
+			//Significa que o corpo esta abaixo do centro de Y
+			if (corpo.getY() < getY()){
+				
+				corpo.setY(corpo.getY() + corpo.getDeslocamento());
+			}
+			//Significa que o corpo esta acima do centro de Y
+			if(corpo.getY() > getY()){
+								
+				corpo.setY(corpo.getY() - corpo.getDeslocamento());
+			}
+		}
+		
+		//Quando é Norte significa que apenas irá mexer no Y, ou seja na VERTICAL 
+		if (corpo.getSentido() == DirecaoEnum.NORTE){
+			
+			//Significa que o corpo esta abaixo do centro de Y
+			if(corpo.getY() < getY()){
+				
+				corpo.setY(corpo.getY() - corpo.getDeslocamento());
+			}
+			//Significa que o corpo esta acima do centro de Y
+			if(corpo.getY() > getY()){
+								
+				corpo.setY(corpo.getY() + corpo.getDeslocamento());
+			}
+			
+		}
+		
+		//Quando é LESTE significa que apenas irá mexer no X, ou seja na HORIZONTAL 
+		if(corpo.getSentido() == DirecaoEnum.LESTE){ 
+			
+			//Significa que o corpo esta abaixo do centro de X
+			if(corpo.getX() < getX()){
+				
+				corpo.setX(corpo.getX() - corpo.getDeslocamento());
+			}
+			
+			//Significa que o corpo esta acima do centro de X
+			if(corpo.getX() > getX()){
+				corpo.setX(corpo.getX() + corpo.getDeslocamento());
+			}
+		}
+		
+		//Quando é OESTE significa que apenas irá mexer no X, ou seja na HORIZONTAL
+		if(corpo.getSentido() == DirecaoEnum.OESTE){
+			
+			//Significa que o corpo esta abaixo do centro de X
+			if(corpo.getX() < getX()){
+				
+				corpo.setX(corpo.getX() + corpo.getDeslocamento());
+			}
+			
+			//Significa que o corpo esta acima do centro de X
+			if(corpo.getX() > getX()){
+				corpo.setX(corpo.getX() - corpo.getDeslocamento());
+			}
+			
+		}
+	
+	}
+	
+	//Verificar se o corpo saiu do Nó o qual pertence, para deslocar o corpo para outro nó,
+	//ou para outro processo 
+	public boolean verficarPosicao(){
+		return false;
+	}
 	// Move o Corpo na prórpia árvore, ou desloca para um outro processo
 	public boolean deslocaCorpo(Corpo corpo) {
 

@@ -9,39 +9,39 @@ public abstract class Pagina
 	{
 			
 	}
-	protected Integer xMinimo,xMaximo,x,yMinimo,yMaximo,y;
+	protected Double xMinimo,xMaximo,x,yMinimo,yMaximo,y;
 	
 	public abstract JSONArray toJsonArray();
 	
-	public Integer getX()
+	public Double getX()
 	{
 		return x;
 	}
-	public Integer getXMaximo()
+	public Double getXMaximo()
 	{
 		return xMaximo;
 	}
-	public Integer getXMinimo()
+	public Double getXMinimo()
 	{
 		return xMinimo;
 	}
-	public Integer getY()
+	public Double getY()
 	{
 		return y;
 	}
-	public Integer getYMaximo()
+	public Double getYMaximo()
 	{
 		return yMaximo;
 	}
-	public Integer getYMinimo()
+	public Double getYMinimo()
 	{
 		return yMinimo;
 	}
-	public void setX(Integer x)
+	public void setX(Double x)
 	{
 		this.x = x;
 	}
-	public void setY(Integer y) 
+	public void setY(Double y) 
 	{
 		this.y = y;
 	}
