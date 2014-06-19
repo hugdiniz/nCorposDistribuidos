@@ -8,11 +8,11 @@ import java.net.Socket;
 
 import entidades.Pagina;
 
-public class SocketMestreControle extends Thread
+public class SocketMestreEscravo extends Thread
 {
 	Socket socket;
 	PrintStream ps;
-	public SocketMestreControle(Socket socket) throws IOException
+	public SocketMestreEscravo(Socket socket) throws IOException
 	{
 		this.socket = socket;
 		ps = new PrintStream(socket.getOutputStream());

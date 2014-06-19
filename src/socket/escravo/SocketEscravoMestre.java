@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class SocketEscravoControle extends Thread
+public class SocketEscravoMestre extends Thread
 {
 	Socket socket;
 	PrintStream ps;
-	public SocketEscravoControle(Socket socket) throws IOException
+	public SocketEscravoMestre(Socket socket) throws IOException
 	{
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream());        
