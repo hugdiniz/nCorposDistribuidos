@@ -8,14 +8,14 @@ import java.util.Collection;
 
 import org.json.JSONArray;
 
-import entidades.ArvoreQuad;
+import entidades.ArvoreQuadLocal;
 import entidades.Corpo;
 import entidades.Pagina;
 import eo.DirecaoEnum;
 
 public class Servico 
 {
-	public ArvoreQuad recuperarArquivoJSonCorpos(String endereco) throws Exception 
+	public ArvoreQuadLocal recuperarArquivoJSonCorpos(String endereco) throws Exception 
 	{		
 		FileReader fileReader = new FileReader(new File(endereco));
 		BufferedReader bufferedReader = new BufferedReader( fileReader );	
@@ -42,8 +42,7 @@ public class Servico
 		/*
 		 * TODO: Criar uma heuristica para gerar dinamicamente o limite do campo da arvore quad
 		 */
-		
-		ArvoreQuad arvoreQuad = new ArvoreQuad(0.0, 1000.0, 0.0, 1000.0);	
+		ArvoreQuadLocal arvoreQuad = new ArvoreQuadLocal(0.0, 1000.0, 0.0, 1000.0,null);		
 		arvoreQuad.add(corpos);
 		arvoreQuad.print();
 		return arvoreQuad;		

@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import socket.mestre.SocketMestreControle;
-import entidades.ArvoreQuad;
+import entidades.ArvoreQuadLocal;
 
 public class Mestre 
 {
@@ -22,7 +22,7 @@ public class Mestre
         BufferedReader entrada = null;
         try
         {
-        	ArvoreQuad arvoreQuad = Servico.getInstance().recuperarArquivoJSonCorpos("src/arquivos/teste.json");
+        	ArvoreQuadLocal arvoreQuad = Servico.getInstance().recuperarArquivoJSonCorpos("src/arquivos/teste.json");
             serv = new ServerSocket(7000); 
             System.out.println("iniciado com sucesso !!!");  
             
