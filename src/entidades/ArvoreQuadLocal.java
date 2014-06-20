@@ -270,7 +270,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		return corpos;
 	}
 	
-	public Corpo corpoMedio()
+	public Corpo getCorpoMedio()
 	{
 		Collection<Corpo> corpos = getCorpos();
 		Double massa = new Double(0);

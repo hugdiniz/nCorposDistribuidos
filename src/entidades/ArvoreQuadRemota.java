@@ -1,10 +1,17 @@
 package entidades;
 
+import java.util.Collection;
+
 import org.json.JSONArray;
 
 public class ArvoreQuadRemota extends ArvoreQuad
 {
 
+	public ArvoreQuadRemota()
+	{
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public Pagina getNorteOeste()
 	{
@@ -42,6 +49,20 @@ public class ArvoreQuadRemota extends ArvoreQuad
 
 	@Override
 	public JSONArray toJsonArray()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Corpo> getCorpos()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Corpo getCorpoMedio()
 	{
 		// TODO Auto-generated method stub
 		return null;

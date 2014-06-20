@@ -8,14 +8,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import socket.mestre.SocketMestreControle;
+import socket.mestre.SocketMestreEscravo;
 import entidades.ArvoreQuadLocal;
 
 public class Mestre 
 {
 	public static void main(String[] args) 
 	{
-		Collection<SocketMestreControle>controles = new HashSet<SocketMestreControle>();
+		Collection<SocketMestreEscravo>controles = new HashSet<SocketMestreEscravo>();
 		
 		System.out.println("iniciando o server ---");        
         ServerSocket serv=null;
@@ -32,7 +32,7 @@ public class Mestre
                 socket = serv.accept(); 
                
                 
-                SocketMestreControle socketMestreControle = new SocketMestreControle(socket);                
+                SocketMestreEscravo socketMestreControle = new SocketMestreEscravo(socket);                
                 Thread tread = new Thread(socketMestreControle);
                 tread.start();
                 controles.add(socketMestreControle);
@@ -41,7 +41,7 @@ public class Mestre
                  */
                 if(controles.size() == 4)
                 {
-                	 Iterator<SocketMestreControle> iterator = controles.iterator();
+                	 Iterator<SocketMestreEscravo> iterator = controles.iterator();
                 	 
                 	 iterator.next().enviarArvore(arvoreQuad.getNorteLeste());
                 	 iterator.next().enviarArvore(arvoreQuad.getNorteOeste());

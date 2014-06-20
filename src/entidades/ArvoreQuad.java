@@ -1,5 +1,7 @@
 package entidades;
 
+import java.util.Collection;
+
 
 public abstract class ArvoreQuad extends Pagina
 {
@@ -14,4 +16,7 @@ public abstract class ArvoreQuad extends Pagina
 	public abstract Pagina getSulLeste();
 	
 	public abstract void add(Pagina pagina);
+	
+	public abstract Collection<Corpo> getCorpos(); 
+	public abstract Corpo getCorpoMedio(); 
 }

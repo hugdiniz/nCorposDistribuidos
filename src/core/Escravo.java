@@ -1,18 +1,26 @@
 package core;
 
 import java.net.Socket;
-import socket.escravo.SocketEscravoControle;
+
+import javax.management.timer.Timer;
+
+import socket.escravo.SocketEscravoMestre;
 
 public class Escravo 
 {
+	private static String id;
 	public static void main(String[] args)	
 	{
-		Socket s = null;
+		/*
+		 * Criando um id para o escravo.
+		 */
+		id = String.valueOf(Timer.ONE_HOUR);
+		
+		Socket socket = null;
         try
-        {                
-            //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("127.0.0.1",7000);  
-            SocketEscravoControle socketEscravoControle = new SocketEscravoControle(s);	            
+        { 
+            socket = new Socket("127.0.0.1",7000);  
+            SocketEscravoMestre socketEscravoControle = new SocketEscravoMestre(socket);	            
             Thread thread = new Thread(socketEscravoControle);
             thread.start();
            
@@ -21,6 +29,10 @@ public class Escravo
         {
         	e.printStackTrace();
         }
+	}
+	public static String getNome()
+	{
+		return id;
 	}
 }
 
