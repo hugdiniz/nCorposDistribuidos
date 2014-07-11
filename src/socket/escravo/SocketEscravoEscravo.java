@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -17,8 +19,11 @@ public class SocketEscravoEscravo extends Thread
 	PrintStream ps;
 	BufferedReader entrada;
 	Long idEscravo;
+	List<Corpo> corposRecebidos;
+
 	public SocketEscravoEscravo(Socket socket) throws IOException
 	{
+		corposRecebidos = new ArrayList<Corpo>();
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream()); 
         entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -32,8 +37,7 @@ public class SocketEscravoEscravo extends Thread
 		
 		try
 		{
-			String msg = entrada.readLine();
-			
+			String msg = entrada.readLine();			
 			/*
 			 * Primeira msg sempre sera o seu id
 			 */
@@ -49,15 +53,48 @@ public class SocketEscravoEscravo extends Thread
 			
 			while(msg != null)
 			{
-				System.out.println(msg);
-				
 				msg = entrada.readLine();
+				try 
+				{
+					executar(msg);
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+					System.err.println("mensagem == " + msg);
+				}
 			}	
 		}
 		catch (Exception e)
 		{			
 			e.printStackTrace();
 		}   
+	}
+	
+	private void executar(String msg) throws Exception
+	{
+		ComunicacaoEnum comunicacaoEnum = ComunicacaoEnum.valueOf(msg);
+		if (comunicacaoEnum.equals(ComunicacaoEnum.SETCORPO))
+		{
+			String corpoString = entrada.readLine();
+			JSONObject jsonObject = new JSONObject(corpoString);
+			Corpo corpo = new Corpo(jsonObject);
+			corposRecebidos.add(corpo);
+			
+		}
+		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
+		{
+			
+		} 
+		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
+		{
+			
+		} 		
+		else 
+		{
+			throw new Exception("socket.escravo.escravo.executar.mensagem.sem.identificacao");
+		}
+
 	}
 	public Long getIdEscravoRemoto() throws IOException
 	{
@@ -67,6 +104,12 @@ public class SocketEscravoEscravo extends Thread
 		}
 		
 		return idEscravo;
+	}
+	public List pollCorposRecebidos() 
+	{
+		List<Corpo> corposRetirados = corposRecebidos.subList(0, corposRecebidos.size());
+		corposRecebidos.clear();
+		return corposRetirados;
 	}
 	
 	public Corpo getCorpoMedio() throws Exception

@@ -1,18 +1,29 @@
 package socket.escravo;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import core.Constantes;
 import entidades.Corpo;
+import entidades.Pagina;
 
 public class SocketControle extends Thread
 {
-	static Map<Long,SocketEscravoEscravo>sockets = new HashMap<Long,SocketEscravoEscravo>();	
+	private SocketControle()
+	{
+		/*
+		 * Construtor privado pois, a instancia desta classe e unica.
+		 */
+	}
+	private  Map<Long,SocketEscravoEscravo>sockets = new HashMap<Long,SocketEscravoEscravo>();	
+	private Collection<Corpo> corpos = new ArrayList<Corpo>();
+	private static SocketControle socketControle;
+	
 	@Override
 	public void run()
 	{
@@ -21,7 +32,7 @@ public class SocketControle extends Thread
         BufferedReader entrada = null;
         try
         {        
-            serv = new ServerSocket(7001); 
+            serv = new ServerSocket(Constantes.portaEscravo); 
             System.out.println("iniciado com sucesso !!!");  
             
             while(true)
@@ -43,7 +54,7 @@ public class SocketControle extends Thread
 		super.run();
 	}
 	
-	public static Corpo getCorpoMedio(Long id,String endereco) throws Exception
+	public Corpo getCorpoMedio(Long id,String endereco) throws Exception
 	{
 		SocketEscravoEscravo socketEscravoEscravo = sockets.get(id);
 		if(socketEscravoEscravo == null)
@@ -55,5 +66,23 @@ public class SocketControle extends Thread
 		
 		return socketEscravoEscravo.getCorpoMedio();
 		
+	}
+	public Collection getCorposRecebido()
+	{
+		corpos.clear();
+		
+		for (SocketEscravoEscravo socketEscravoEscravo : sockets.values())
+		{
+			corpos.addAll(socketEscravoEscravo.pollCorposRecebidos());
+		}
+		return corpos;
+	}
+	
+	public static synchronized SocketControle getInstance() 
+	{
+		if (socketControle == null) {
+			socketControle = new SocketControle();
+		}
+		return socketControle;
 	}
 }

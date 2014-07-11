@@ -77,7 +77,7 @@ public class ArvoreQuadRemota extends ArvoreQuad
 		{
 			if (corpoMedio == null)
 			{
-				corpoMedio = SocketControle.getCorpoMedio(id, endereco);
+				corpoMedio = SocketControle.getInstance().getCorpoMedio(id, endereco);
 			}
 		}
 		catch (Exception e)

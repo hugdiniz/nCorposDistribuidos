@@ -26,26 +26,22 @@ public class SocketEscravoMestre extends Thread
 	{
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream()); 
-        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        iniciarConversaMestre();
-        start();
+        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));        
+       
 	}
 	
-	public ArvoreQuad iniciarConversaMestre() throws Exception 
+	public ArvoreQuadLocal iniciarConversaMestre() throws Exception 
 	{
 		ps.println(ComunicacaoEnum.OIMESTRE.toString()); 
 		
 		/*
 		 * Espera os corpos para montar a arvore.
-		 */
-		
+		 */		
 		String corposString = entrada.readLine();
-		ArvoreQuad arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));
-		System.out.println(arvoreQuad);
-		
-		
+		ArvoreQuadLocal arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));		
+		start();
 				
-		return null;   
+		return arvoreQuad;   
 	}
 	
 	@Override
@@ -68,8 +64,23 @@ public class SocketEscravoMestre extends Thread
 			e.printStackTrace();
 		}
 	}
-	public void finalizarExecucao()
+	public void finalizarExecucao() throws Exception
 	{ 
-        
+		System.out.println("Finalizei");
+		ps.println(ComunicacaoEnum.FIMEXECUCAO.toString()); 
+		
+		/*
+		 * Espera os corpos para montar a arvore.
+		 */		
+		String msg = entrada.readLine();
+		if (ComunicacaoEnum.PROXIMAATUALIZACAO.toString().equals(msg))
+		{
+			return;
+		}
+		else
+		{
+			throw new Exception("socket.escravo.escravo.finalizar.execucao.msg.nao.entendida");
+		}	
+		
 	}
 }

@@ -21,7 +21,7 @@ public abstract class ArvoreQuad extends Pagina
 	public abstract Collection<Corpo> getCorpos(); 
 	public abstract Corpo getCorpoMedio();
 	
-	public static ArvoreQuad montarArvore(JSONObject jsonObject) throws Exception
+	public static ArvoreQuadLocal montarArvore(JSONObject jsonObject) throws Exception
 	{
 		Double xMinimo,xMaximo,yMinimo,yMaximo;
 		xMinimo = jsonObject.getDouble("xMinimo");
