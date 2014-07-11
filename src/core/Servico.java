@@ -5,10 +5,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 
+import socket.mestre.SocketMestreEscravo;
 import entidades.ArvoreQuadLocal;
+import entidades.ArvoreQuadRemota;
 import entidades.Corpo;
 import entidades.Pagina;
 import eo.DirecaoEnum;
@@ -46,6 +51,140 @@ public class Servico
 		arvoreQuad.add(corpos);
 		arvoreQuad.print();
 		return arvoreQuad;		
+	}
+	
+	public Map<Long,ArvoreQuadLocal> splitArvoreQuad(ArvoreQuadLocal arvoreQuadLocal,Collection<SocketMestreEscravo> socketMestreEscravos) throws Exception
+	{
+			
+		Map<Long,ArvoreQuadLocal> mapa = new HashMap<Long,ArvoreQuadLocal>();
+		Integer quantidade = socketMestreEscravos.size();
+		Integer profundidade = quantidade / 4;
+		Integer sobra = quantidade%4;
+		
+		gerarArvoreVazia(quantidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo());
+		
+		for (SocketMestreEscravo socketMestreEscravo : socketMestreEscravos)
+		{
+			mapa.put(socketMestreEscravo.getIdSocket(), gerarArvoreVazia(profundidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo()));
+		}
+		
+		List<Pagina> partes = recuperarPartes(arvoreQuadLocal,profundidade);
+		Integer quantidadePartes = 0;		
+		
+		for (SocketMestreEscravo socketMestreEscravo: socketMestreEscravos)
+		{
+			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());			
+			Pagina parte = partes.get(quantidadePartes);
+			
+			arvoreEscravo.add(parte);
+			
+			/*
+			 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
+			 */
+			for (ArvoreQuadLocal arvore : mapa.values())
+			{
+				if (arvore != arvoreEscravo)
+				{
+					ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), null);
+					arvore.add(arvoreQuadRemota);
+				}
+			}
+			
+			quantidadePartes++;
+			
+			/*
+			 * Verificando se tem sobra no divisao da arvore, caso tenha dar uma arvore extra para o escravo.			
+			 */
+			if (sobra > 0)
+			{
+				
+				arvoreEscravo.add(parte);
+				
+				/*
+				 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
+				 */
+				for (ArvoreQuadLocal arvore : mapa.values())
+				{
+					if (arvore != arvoreEscravo)
+					{
+						ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), null);
+						arvore.add(arvoreQuadRemota);
+					}
+				}
+				
+				quantidadePartes++;
+				sobra--;
+			}
+		
+		}
+		
+		
+		return mapa;		
+	}
+	
+	
+	private ArvoreQuadLocal gerarArvoreVazia(Integer profundidade,Double xMinimo,Double xMaximo,Double yMinimo,Double yMaximo)
+	{
+		ArvoreQuadLocal arvoreQuad = new ArvoreQuadLocal(xMinimo, xMaximo, yMinimo, yMaximo);
+		Double x = (xMaximo - xMinimo)/2;
+		Double y = (yMaximo - yMinimo)/2;
+		if (profundidade > 1)
+		{
+			arvoreQuad.setNorteOeste(gerarArvoreVazia(profundidade - 1, xMinimo, x, yMinimo,y,arvoreQuad));
+			arvoreQuad.setNorteLeste(gerarArvoreVazia(profundidade - 1, x, xMaximo, yMinimo, y,arvoreQuad));
+			arvoreQuad.setSulOeste(gerarArvoreVazia(profundidade - 1, xMinimo, x, y,yMaximo,arvoreQuad));
+			arvoreQuad.setSulLeste(gerarArvoreVazia(profundidade - 1, x, xMaximo, y, yMaximo,arvoreQuad));
+		}		
+	
+		return arvoreQuad;
+	}
+	
+	private ArvoreQuadLocal gerarArvoreVazia(Integer profundidade,Double xMinimo,Double xMaximo,Double yMinimo,Double yMaximo,ArvoreQuadLocal pai)
+	{
+		ArvoreQuadLocal arvoreQuad = gerarArvoreVazia(profundidade, xMinimo, xMaximo, yMinimo, yMaximo);
+		arvoreQuad.setPai(pai);
+		return arvoreQuad;
+	}
+	
+	private List<Pagina> recuperarPartes(Pagina pagina,Integer profundidade) throws Exception
+	{
+		List<Pagina> partes = new ArrayList<Pagina>();
+		if(profundidade > 1)
+		{
+			if (pagina != null)
+			{
+				if(pagina instanceof Corpo)
+				{
+					ArvoreQuadLocal arvoreQuadLocal = pagina.getPai().criarArvoreFilho(pagina);
+					arvoreQuadLocal.add(pagina);
+					pagina = arvoreQuadLocal;
+				}
+			}
+			else
+			{
+				throw new Exception("erro.recuperar.arvore.nula");
+			}	
+			
+			partes.addAll(recuperarPartes(((ArvoreQuadLocal) pagina).getNorteLeste(), profundidade -1));
+			partes.addAll(recuperarPartes(((ArvoreQuadLocal) pagina).getNorteOeste(), profundidade -1));
+			partes.addAll(recuperarPartes(((ArvoreQuadLocal) pagina).getSulLeste(), profundidade -1));
+			partes.addAll(recuperarPartes(((ArvoreQuadLocal) pagina).getSulOeste(), profundidade -1));
+			
+		}
+		else
+		{
+			if(pagina instanceof Corpo)
+			{
+				ArvoreQuadLocal arvoreQuadLocal = pagina.getPai().criarArvoreFilho(pagina);
+				arvoreQuadLocal.add(pagina);
+				pagina = arvoreQuadLocal;
+			}	
+			partes.add(((ArvoreQuadLocal) pagina).getNorteLeste());
+			partes.add(((ArvoreQuadLocal) pagina).getNorteOeste());
+			partes.add(((ArvoreQuadLocal) pagina).getSulLeste());
+			partes.add(((ArvoreQuadLocal) pagina).getSulOeste());
+		}	
+		return partes;
 	}
 	
 	public static Servico getInstance()

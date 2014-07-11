@@ -13,7 +13,42 @@ public class Corpo extends Pagina
 	private Double velocidade;
 	private DirecaoEnum sentido;
 	private Double deslocamento;
-		
+	
+	public Corpo()
+	{
+		// TODO Auto-generated constructor stub
+	}
+	public Corpo(JSONObject jsonObject)
+	{
+		if (jsonObject.has("massa"))
+		{
+			massa = jsonObject.getDouble("massa");			
+		}
+		if (jsonObject.has("forca"))
+		{
+			forca = jsonObject.getDouble("forca");			
+		}
+		if (jsonObject.has("velocidade"))
+		{
+			velocidade = jsonObject.getDouble("velocidade");			
+		}
+		if (jsonObject.has("deslocamento"))
+		{
+			deslocamento = jsonObject.getDouble("deslocamento");			
+		}
+		if (jsonObject.has("sentido"))
+		{
+			sentido = DirecaoEnum.valueOf(jsonObject.getString("sentido"));			
+		}
+		if (jsonObject.has("x"))
+		{
+			x = jsonObject.getDouble("x");	
+		}
+		if (jsonObject.has("y"))
+		{
+			y = jsonObject.getDouble("y");	
+		}
+	}
 	
 	public void calcDeslocamento(Integer T){
 		

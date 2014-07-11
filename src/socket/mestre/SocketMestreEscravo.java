@@ -6,14 +6,29 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+import util.GeradorJSONCorpos;
+import util.Util;
+
 import entidades.Pagina;
 
 public class SocketMestreEscravo extends Thread
 {
 	Socket socket;
 	PrintStream ps;
+	private Long id;
+	
+	public String getIp()
+	{
+		return socket.getLocalAddress().toString();
+	}
+	public Long getIdSocket()
+	{
+		return id;
+	}
+	
 	public SocketMestreEscravo(Socket socket) throws IOException
 	{
+		id = Util.gerarId();
 		this.socket = socket;
 		ps = new PrintStream(socket.getOutputStream());
 	}
@@ -41,7 +56,7 @@ public class SocketMestreEscravo extends Thread
 	{
 		if (pagina != null)
 		{
-			ps.println(pagina.toJsonArray());
+			ps.println(pagina.toJsonObject());
 		}
 	}
 }

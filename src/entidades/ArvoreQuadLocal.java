@@ -2,18 +2,56 @@ package entidades;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import eo.DirecaoEnum;
 
 public class ArvoreQuadLocal extends ArvoreQuad
 {	
-	public ArvoreQuadLocal(Double xMinimo, Double xMaximo, Double yMinimo,Double yMaximo,Pagina pai)
+	public ArvoreQuadLocal(Double xMinimo, Double xMaximo, Double yMinimo,Double yMaximo,ArvoreQuadLocal pai)
 	{
-		this.y = yMinimo + yMaximo / 2;
-		this.x = xMinimo + xMaximo / 2;
+		this.y = (yMinimo + yMaximo) / 2;
+		this.x = (xMaximo + xMinimo) / 2;		
 		this.xMaximo = xMaximo;
 		this.xMinimo = xMinimo;
 		this.yMaximo = yMaximo;
 		this.yMinimo = yMinimo;
+		this.pai = pai;
+	}
+	public ArvoreQuadLocal(Double xMinimo, Double xMaximo, Double yMinimo,Double yMaximo)
+	{
+		this.y = (yMinimo + yMaximo) / 2;
+		this.x = (xMinimo + xMaximo) / 2;
+		this.xMaximo = xMaximo;
+		this.xMinimo = xMinimo;
+		this.yMaximo = yMaximo;
+		this.yMinimo = yMinimo;
+		this.pai = null;
+	}
+	public ArvoreQuadLocal criarArvoreFilho(Pagina filho) throws Exception
+	{
+		if (getNorteLeste() == filho)
+		{
+			return new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
+		}
+		else if (getNorteOeste() == filho)
+		{
+			return new ArvoreQuadLocal(getXMinimo(),getX(),getYMinimo(),getY(),this);
+		}
+		else if (getSulLeste() == filho)
+		{
+			return new ArvoreQuadLocal(getX(),getXMaximo(),getY(),getYMaximo(),this);
+		}
+		else if (getSulOeste() == filho)
+		{
+			return new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
+		}
+		else
+		{
+			throw new Exception("erro.filho.nao.existe");
+		}
 	}
 
 	public Pagina getNorteOeste() 
@@ -56,11 +94,11 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		this.sulLeste = sulLeste;
 	}
 	
-	public void add(Pagina pagina) 
+	public void add(Pagina pagina) throws Exception 
 	{
 		
 		if(pagina.getY() > getY() && pagina.getX() > getX())
-		{
+		{			
 			if (sulLeste != null)
 			{
 				if (sulLeste instanceof ArvoreQuadLocal) 
@@ -78,12 +116,17 @@ public class ArvoreQuadLocal extends ArvoreQuad
 				}	
 			}
 			else
-			{
+			{				
 				sulLeste = pagina;
+				
+				/*
+				 * Luke, I am your father !
+				 */
+				pagina.setPai(this);
 			}	
 		}
 		else if(pagina.getY() > getY() && pagina.getX() <= getX())
-		{
+		{			
 			if (sulOeste != null)
 			{
 				if (sulOeste instanceof ArvoreQuadLocal) 
@@ -101,8 +144,9 @@ public class ArvoreQuadLocal extends ArvoreQuad
 				}	
 			}
 			else
-			{
+			{				
 				sulOeste = pagina;
+				pagina.setPai(this);
 			}	
 		}
 		else if(pagina.getY() <= getY() && pagina.getX() > getX())
@@ -119,13 +163,14 @@ public class ArvoreQuadLocal extends ArvoreQuad
 					objetos.add(pagina);
 					objetos.add(norteLeste);
 					
-					norteLeste = new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
+					norteLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getYMinimo(),getY(),this);
 					((ArvoreQuadLocal) norteLeste).add(objetos);
 				}	
 			}
 			else
-			{
+			{				
 				norteLeste = pagina;
+				pagina.setPai(this);
 			}	
 		}
 		else if(pagina.getY() <= getY() && pagina.getX() <= getX())
@@ -139,16 +184,21 @@ public class ArvoreQuadLocal extends ArvoreQuad
 				else
 				{
 					Collection<Pagina> objetos = new ArrayList<Pagina>();
-					objetos.add(pagina);
-					objetos.add(norteOeste);
+ 					objetos.add(pagina);
+					objetos.add(norteOeste);					
+					if (pagina.getX().equals(norteOeste.getX()) && pagina.getY().equals(norteOeste.getY()))
+					{
+						throw new Exception("corpos.locais.iguais");
+					}
 					
 					norteOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getYMinimo(),getY(),this);
 					((ArvoreQuadLocal) norteOeste).add(objetos);
 				}	
 			}
 			else
-			{
+			{				
 				norteOeste = pagina;
+				pagina.setPai(this);
 			}
 		}
 		else
@@ -158,11 +208,11 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		}
 	}
 	
-	public void add(Collection<Pagina> paginas)
+	public void add(Collection<Pagina> paginas) throws Exception
 	{
 		for (Pagina pagina : paginas)
 		{
-			add(pagina);
+			add(pagina);			
 		}
 	}
 	
@@ -292,4 +342,174 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		
 	}
 	
+	@Override
+	public JSONObject toJsonObject()
+	{
+		JSONObject jsonObject = new JSONObject();
+		
+		jsonObject.put("xMinimo", xMinimo);
+		jsonObject.put("xMaximo", xMaximo);
+		
+		jsonObject.put("yMinimo", yMinimo);
+		jsonObject.put("yMaximo", yMaximo);
+		
+		
+		if (norteLeste instanceof Corpo) 
+		{
+			JSONObject norteLesteObject = new JSONObject();
+			norteLesteObject.append("Corpo", norteLeste.toJsonObject());
+			jsonObject.append("norteLeste", norteLesteObject);
+		}
+		else if(norteLeste instanceof ArvoreQuadLocal)
+		{
+			JSONObject norteLesteObject = new JSONObject();
+			norteLesteObject.append("ArvoreQuadLocal", norteLeste.toJsonObject());
+			jsonObject.append("norteLeste", norteLesteObject);
+		}
+		else if(norteLeste instanceof ArvoreQuadRemota)
+		{
+			JSONObject norteLesteObject = new JSONObject();
+			norteLesteObject.append("ArvoreQuadRemota", norteLeste.toJsonObject());
+			jsonObject.append("norteLeste", norteLesteObject);			
+		}
+		
+		if (norteOeste instanceof Corpo) 
+		{
+			JSONObject norteOesteObject = new JSONObject();
+			norteOesteObject.append("Corpo", norteOeste.toJsonObject());
+			jsonObject.append("norteOeste", norteOesteObject);
+		}
+		else if(norteOeste instanceof ArvoreQuadLocal)
+		{
+			JSONObject norteOesteObject = new JSONObject();
+			norteOesteObject.append("ArvoreQuadLocal", norteOeste.toJsonObject());
+			jsonObject.append("norteOeste", norteOesteObject);
+		}
+		else if(norteOeste instanceof ArvoreQuadRemota)
+		{
+			JSONObject norteOesteObject = new JSONObject();
+			norteOesteObject.append("ArvoreQuadRemota", norteOeste.toJsonObject());
+			jsonObject.append("norteOeste", norteOesteObject);
+		}
+		
+		if (sulOeste instanceof Corpo) 
+		{
+			JSONObject sulOesteObject = new JSONObject();
+			sulOesteObject.append("Corpo", sulOeste.toJsonObject());
+			jsonObject.append("sulOeste", sulOesteObject);
+		}
+		else if(sulOeste instanceof ArvoreQuadLocal)
+		{
+			JSONObject sulOesteObject = new JSONObject();
+			sulOesteObject.append("ArvoreQuadLocal", sulOeste.toJsonObject());
+			jsonObject.append("sulOeste", sulOesteObject);
+		}
+		else if(sulOeste instanceof ArvoreQuadRemota)
+		{
+			JSONObject sulOesteObject = new JSONObject();
+			sulOesteObject.append("ArvoreQuadRemota", sulOeste.toJsonObject());
+			jsonObject.append("sulOeste", sulOesteObject);
+		}
+		
+		if (sulLeste instanceof Corpo) 
+		{
+			JSONObject sulLesteObject = new JSONObject();
+			sulLesteObject.append("Corpo", sulLeste.toJsonObject());
+			jsonObject.append("sulLeste", sulLesteObject);
+		}
+		else if(sulLeste instanceof ArvoreQuadLocal)
+		{
+			JSONObject sulLesteObject = new JSONObject();
+			sulLesteObject.append("ArvoreQuadLocal", sulLeste.toJsonObject());
+			jsonObject.append("sulLeste", sulLesteObject);
+		}
+		else if(sulLeste instanceof ArvoreQuadRemota)
+		{
+			JSONObject sulLesteObject = new JSONObject();
+			sulLesteObject.append("ArvoreQuadRemota", sulLeste.toJsonObject());
+			jsonObject.append("sulLeste", sulLesteObject);
+		}
+		
+		return jsonObject;
+	}
+	
+	public void atualizaPosicaoCorpo(Corpo corpo) {
+
+		// Quando é SUL significa que apenas irá mexer no Y, ou seja na VERTICAL
+		if (corpo.getSentido() == DirecaoEnum.SUL) {
+
+			// Significa que o corpo esta abaixo do centro de Y
+			if (corpo.getY() > getY()) {
+
+				corpo.setY(corpo.getY() + corpo.getDeslocamento());
+			}
+			// Significa que o corpo esta acima do centro de Y
+			if (corpo.getY() < getY()) {
+
+				corpo.setY(corpo.getY() - corpo.getDeslocamento());
+			}
+		}
+
+		// Quando é Norte significa que apenas irá mexer no Y, ou seja na
+		// VERTICAL
+		if (corpo.getSentido() == DirecaoEnum.NORTE) {
+
+			// Significa que o corpo esta abaixo do centro de Y
+			if (corpo.getY() > getY()) {
+
+				corpo.setY(corpo.getY() - corpo.getDeslocamento());
+			}
+			// Significa que o corpo esta acima do centro de Y
+			if (corpo.getY() < getY()) {
+
+				corpo.setY(corpo.getY() + corpo.getDeslocamento());
+			}
+
+		}
+
+		// Quando é LESTE significa que apenas irá mexer no X, ou seja na
+		// HORIZONTAL
+		if (corpo.getSentido() == DirecaoEnum.LESTE) {
+
+			// Significa que o corpo esta abaixo do centro de X
+			if (corpo.getX() < getX()) {
+
+				corpo.setX(corpo.getX() - corpo.getDeslocamento());
+			}
+
+			// Significa que o corpo esta acima do centro de X
+			if (corpo.getX() > getX()) {
+				corpo.setX(corpo.getX() + corpo.getDeslocamento());
+			}
+		}
+
+		// Quando é OESTE significa que apenas irá mexer no X, ou seja na
+		// HORIZONTAL
+		if (corpo.getSentido() == DirecaoEnum.OESTE) {
+			// Significa que o corpo esta abaixo do centro de X
+			if (corpo.getX() < getX()) {
+				corpo.setX(corpo.getX() + corpo.getDeslocamento());
+			}
+
+			// Significa que o corpo esta acima do centro de X
+			if (corpo.getX() > getX()) {
+				corpo.setX(corpo.getX() - corpo.getDeslocamento());
+			}
+		}
+
+	}
+	
+	
+		
+	 //Verificar se o corpo saiu do Nó o qual pertence, para deslocar o corpo para outro nó,
+	 //ou para outro processo
+	 public boolean verficarPosicao(Corpo corpo)
+	 {
+		 if (corpo.getX() > getXMinimo() &&  corpo.getX() < getXMaximo() && corpo.getY() > getYMinimo() &&  corpo.getY() < getYMaximo())
+		 {
+			return true;
+		 }
+		 
+		 return false;
+	 }
 }

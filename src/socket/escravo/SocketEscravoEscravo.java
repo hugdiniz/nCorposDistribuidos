@@ -6,12 +6,17 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+import org.json.JSONObject;
+
+import entidades.Corpo;
+import eo.ComunicacaoEnum;
+
 public class SocketEscravoEscravo extends Thread
 {
 	Socket socket;
 	PrintStream ps;
 	BufferedReader entrada;
-	String idEscravoRemoto;
+	Long idEscravo;
 	public SocketEscravoEscravo(Socket socket) throws IOException
 	{
 		this.socket = socket;
@@ -32,7 +37,15 @@ public class SocketEscravoEscravo extends Thread
 			/*
 			 * Primeira msg sempre sera o seu id
 			 */
-			idEscravoRemoto = msg;
+			try
+			{
+				idEscravo = Long.parseLong(msg);
+			}
+			catch (Exception e)
+			{
+				throw new Exception("erro.recuperar.id.escravo");
+			}
+			
 			
 			while(msg != null)
 			{
@@ -46,14 +59,23 @@ public class SocketEscravoEscravo extends Thread
 			e.printStackTrace();
 		}   
 	}
-	public String getIdEscravoRemoto() throws IOException
+	public Long getIdEscravoRemoto() throws IOException
 	{
-		while(idEscravoRemoto == null)
+		while(idEscravo == null)
 		{
 			
 		}
 		
-		return idEscravoRemoto;
+		return idEscravo;
+	}
+	
+	public Corpo getCorpoMedio() throws Exception
+	{
+		ps.println(ComunicacaoEnum.GETCORPOMEDIO);
+		String msg = entrada.readLine();
+		JSONObject jsonObject = new JSONObject(msg);
+		Corpo corpo = new Corpo(jsonObject);
+		return corpo;
 	}
 	public void finalizarExecucao()
 	{ 

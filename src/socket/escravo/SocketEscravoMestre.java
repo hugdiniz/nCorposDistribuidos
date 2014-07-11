@@ -6,40 +6,67 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import entidades.ArvoreQuad;
+import entidades.ArvoreQuadLocal;
+import entidades.Corpo;
+import eo.ComunicacaoEnum;
+import eo.DirecaoEnum;
+
 public class SocketEscravoMestre extends Thread
 {
 	Socket socket;
 	PrintStream ps;
-	public SocketEscravoMestre(Socket socket) throws IOException
+	BufferedReader entrada;
+	
+	public SocketEscravoMestre(Socket socket) throws Exception
 	{
 		this.socket = socket;
-        ps = new PrintStream(socket.getOutputStream());        
+        ps = new PrintStream(socket.getOutputStream()); 
+        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         iniciarConversaMestre();
+        start();
 	}
 	
-	private void iniciarConversaMestre()
+	public ArvoreQuad iniciarConversaMestre() throws Exception 
 	{
-		ps.println("Estou enviando dados para o servidor");       
+		ps.println(ComunicacaoEnum.OIMESTRE.toString()); 
+		
+		/*
+		 * Espera os corpos para montar a arvore.
+		 */
+		
+		String corposString = entrada.readLine();
+		ArvoreQuad arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));
+		System.out.println(arvoreQuad);
+		
+		
+				
+		return null;   
 	}
 	
 	@Override
 	public void run()
 	{	
 		super.run();
-		
+		String msg;
 		try
 		{
-			BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));        
-			
-			while(true)
+			msg = entrada.readLine();
+			while(msg != null)
 			{
-				System.out.println(entrada.readLine());	
-			}						
+				System.out.println(msg);
+				
+				msg = entrada.readLine();
+			}
 		}
-		catch (Exception e)
-		{			
+		catch (IOException e)
+		{
 			e.printStackTrace();
-		}   
+		}
 	}
 	public void finalizarExecucao()
 	{ 

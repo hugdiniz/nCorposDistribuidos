@@ -1,10 +1,11 @@
  package entidades;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public abstract class Pagina 
 {
-
+	ArvoreQuadLocal pai;
 	public Pagina() 
 	{
 			
@@ -12,6 +13,7 @@ public abstract class Pagina
 	protected Double xMinimo,xMaximo,x,yMinimo,yMaximo,y;
 	
 	public abstract JSONArray toJsonArray();
+	public abstract JSONObject toJsonObject();
 	
 	public Double getX()
 	{
@@ -44,6 +46,14 @@ public abstract class Pagina
 	public void setY(Double y) 
 	{
 		this.y = y;
+	}
+	public ArvoreQuadLocal getPai()
+	{
+		return pai;
+	}
+	public void setPai(ArvoreQuadLocal pai)
+	{
+		this.pai = pai;
 	}
 	
 	
