@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class Servico
 		return arvoreQuad;		
 	}
 	
-	public Map<Long,ArvoreQuadLocal> splitArvoreQuad(ArvoreQuadLocal arvoreQuadLocal,Collection<SocketMestreEscravo> socketMestreEscravos) throws Exception
+	public Map<Long,ArvoreQuadLocal> splitArvoreQuad(ArvoreQuadLocal arvoreQuadLocal,List<SocketMestreEscravo> socketMestreEscravos) throws Exception
 	{
 			
 		Map<Long,ArvoreQuadLocal> mapa = new HashMap<Long,ArvoreQuadLocal>();
@@ -69,12 +70,15 @@ public class Servico
 		}
 		
 		List<Pagina> partes = recuperarPartes(arvoreQuadLocal,profundidade);
-		Integer quantidadePartes = 0;		
-		
-		for (SocketMestreEscravo socketMestreEscravo: socketMestreEscravos)
+		Integer prox = 0;		
+		Iterator<Pagina> iteratorPagina = partes.iterator();
+		while (iteratorPagina.hasNext()) 
 		{
-			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());			
-			Pagina parte = partes.get(quantidadePartes);
+			SocketMestreEscravo socketMestreEscravo = socketMestreEscravos.get(prox);					
+			
+			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());
+			Pagina parte = iteratorPagina.next();			
+			
 			if (parte instanceof ArvoreQuadLocal)
 			{
 				arvoreEscravo.add(((ArvoreQuadLocal) parte).getCorpos());
@@ -97,33 +101,18 @@ public class Servico
 				}
 			}
 			
-			quantidadePartes++;
+			prox++;	
 			
 			/*
-			 * Verificando se tem sobra no divisao da arvore, caso tenha dar uma arvore extra para o escravo.			
-			 */
-			if (sobra > 0)
-			{
-				
-				arvoreEscravo.add(parte);
-				
-				/*
-				 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
-				 */
-				for (ArvoreQuadLocal arvore : mapa.values())
-				{
-					if (arvore != arvoreEscravo)
-					{
-						ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), arvore);
-						arvore.add(arvoreQuadRemota);
-					}
-				}
-				
-				quantidadePartes++;
-				sobra--;
-			}
+				caso ele ultrapasse o numero de sockets
+			*/						
+			if (socketMestreEscravos.size() <= prox)
+			 {
+				prox = 0;
+			}	
 		
 		}
+		
 		
 		
 		return mapa;		
