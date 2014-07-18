@@ -48,18 +48,12 @@ public class Corpo extends Pagina
 		{
 			y = jsonObject.getDouble("y");	
 		}
-	}
+	}	
 	
-	public void calcDeslocamento(Integer T){
-		
-		Double aceleracao;
-		
-		aceleracao = forca/massa;
-		
-		deslocamento =  ((velocidade * T) + ((aceleracao * (T*T))/2));
-				
+	public void setDeslocamento(Double deslocamento) 
+	{
+		this.deslocamento = deslocamento;
 	}
-	
 	
 	public DirecaoEnum getSentido()
 	{

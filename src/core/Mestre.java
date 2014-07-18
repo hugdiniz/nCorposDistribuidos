@@ -30,16 +30,13 @@ public class Mestre
 		
 	}
 	public Mestre() throws Exception
-	{
-		
-		
-		
+	{		
 		System.out.println("iniciando o server ---");        
         ServerSocket serv= null;
         BufferedReader entrada = null;
         
 		ArvoreQuadLocal arvoreQuad = Servico.getInstance().recuperarArquivoJSonCorpos(Constantes.enderecoArquivoCorpos);        	
-    	
+		//Map<Long,ArvoreQuadLocal> mapaArvore = Servico.getInstance().splitArvoreQuad(arvoreQuad, controles);
         serv = new ServerSocket(Constantes.portaMestre); 
         System.out.println("iniciado com sucesso !!!");  
         
@@ -56,7 +53,7 @@ public class Mestre
             
             if(Constantes.quantidadeEscravo.equals(controles.size()))
             {                	 
-            	 Map<Long,ArvoreQuadLocal> mapaArvore = Servico.getInstance().splitArvoreQuad(arvoreQuad, controles);
+            	Map<Long,ArvoreQuadLocal> mapaArvore = Servico.getInstance().splitArvoreQuad(arvoreQuad, controles);
             	 
             	 for (SocketMestreEscravo socketMestreEscravo : controles)
             	 {

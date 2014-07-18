@@ -26,27 +26,18 @@ public class Escravo
 		socket = new Socket(Constantes.enderecoMestre,Constantes.portaMestre);  
         SocketEscravoMestre socketEscravoMestre = new SocketEscravoMestre(socket);
         arvoreQuadLocal = socketEscravoMestre.iniciarConversaMestre();        
-       
+       System.out.println();
         SocketControle.getInstance().start();
         
         while (true)
         {
-			atualizarArvore();
+			arvoreQuadLocal.atualizarArvore();
 			socketEscravoMestre.finalizarExecucao();
 			arvoreQuadLocal.add(SocketControle.getInstance().getCorposRecebido());			
 		}
 	}
 	
-	public void atualizarArvore()
-	{
-		try
-		{
-			Thread.sleep(100);
-		} catch (InterruptedException e) 
-		{			
-			e.printStackTrace();
-		}
-	}
+
 	
 }
 

@@ -8,8 +8,8 @@ public class Constantes
 	public static String enderecoArquivoCorpos = "src/arquivos/100Corpos.json";
 	public static String enderecoMestre = "127.0.0.1";
 	public static Integer portaMestre = 7000;
-	public static Integer quantidadeEscravo = 4;
-	
+	public static Integer quantidadeEscravo = 1;
+	public static Integer tempo = 9;
 	/**
 	 * Constantes do Escravo
 	 */

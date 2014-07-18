@@ -65,8 +65,7 @@ public class SocketEscravoMestre extends Thread
 		}
 	}
 	public void finalizarExecucao() throws Exception
-	{ 
-		System.out.println("Finalizei");
+	{ 		
 		ps.println(ComunicacaoEnum.FIMEXECUCAO.toString()); 
 		
 		/*

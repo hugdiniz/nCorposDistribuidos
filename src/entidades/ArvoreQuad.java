@@ -50,7 +50,8 @@ public abstract class ArvoreQuad extends Pagina
 			else
 			{
 				throw new Exception("erro.arvore.objeto.nao.identificado.json.object");
-			}	
+			}
+			arvoreQuadLocal.norteLeste.pai = arvoreQuadLocal; 
 		}
 		if(jsonObject.has("norteOeste"))
 		{
@@ -71,7 +72,8 @@ public abstract class ArvoreQuad extends Pagina
 			else
 			{
 				throw new Exception("erro.arvore.objeto.nao.identificado.json.object");
-			}	
+			}
+			arvoreQuadLocal.norteOeste.pai = arvoreQuadLocal; 
 		}
 		if(jsonObject.has("sulOeste"))
 		{
@@ -92,7 +94,8 @@ public abstract class ArvoreQuad extends Pagina
 			else
 			{
 				throw new Exception("erro.arvore.objeto.nao.identificado.json.object");
-			}	
+			}
+			arvoreQuadLocal.sulOeste.pai = arvoreQuadLocal; 
 		}
 		if(jsonObject.has("sulLeste"))
 		{
@@ -113,10 +116,22 @@ public abstract class ArvoreQuad extends Pagina
 			else
 			{
 				throw new Exception("erro.arvore.objeto.nao.identificado.json.object");
-			}	
+			}
+			arvoreQuadLocal.sulLeste.pai = arvoreQuadLocal;
 		}
 		return arvoreQuadLocal;
 	}
+	public ArvoreQuadLocal getRaiz()
+	{
+		if (pai != null) {
+			return pai.getRaiz();
+		}
+		else
+		{
+			return pai;
+		}	
+	}
+	
 	public static ArvoreQuad montarArvore(JSONObject jsonObject,ArvoreQuadLocal pai) throws Exception
 	{
 		ArvoreQuad arvoreQuad = montarArvore(jsonObject);

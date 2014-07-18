@@ -61,7 +61,7 @@ public class Servico
 		Integer profundidade = quantidade / 4;
 		Integer sobra = quantidade%4;
 		
-		gerarArvoreVazia(quantidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo());
+		//gerarArvoreVazia(quantidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo());
 		
 		for (SocketMestreEscravo socketMestreEscravo : socketMestreEscravos)
 		{
@@ -75,8 +75,15 @@ public class Servico
 		{
 			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());			
 			Pagina parte = partes.get(quantidadePartes);
+			if (parte instanceof ArvoreQuadLocal)
+			{
+				arvoreEscravo.add(((ArvoreQuadLocal) parte).getCorpos());
+			}
+			else
+			{
+				arvoreEscravo.add(parte);
+			}
 			
-			arvoreEscravo.add(parte);
 			
 			/*
 			 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
@@ -85,7 +92,7 @@ public class Servico
 			{
 				if (arvore != arvoreEscravo)
 				{
-					ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), null);
+					ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), arvore);
 					arvore.add(arvoreQuadRemota);
 				}
 			}
@@ -107,7 +114,7 @@ public class Servico
 				{
 					if (arvore != arvoreEscravo)
 					{
-						ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), null);
+						ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), arvore);
 						arvore.add(arvoreQuadRemota);
 					}
 				}
