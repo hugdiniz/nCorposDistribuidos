@@ -98,128 +98,131 @@ public class ArvoreQuadLocal extends ArvoreQuad
 	
 	public void add(Pagina pagina) throws Exception 
 	{
+		if (pagina != null)
+		{
+			if(pagina.getY() > getY() && pagina.getX() > getX())
+			{			
+				if (sulLeste != null)
+				{
+					if (sulLeste instanceof ArvoreQuadLocal) 
+					{
+						((ArvoreQuadLocal) sulLeste).add(pagina);				
+					}
+					else
+					{
+						Collection<Pagina> objetos = new ArrayList<Pagina>();
+						objetos.add(pagina);
+						objetos.add(sulLeste);
+						if (pagina.getX().equals(sulLeste.getX()) && pagina.getY().equals(sulLeste.getY()))
+						{
+							throw new Exception("corpos.locais.iguais");
+						}
+						
+						sulLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getY(),getYMaximo(),this);
+						((ArvoreQuadLocal) sulLeste).add(objetos);
+					}	
+				}
+				else
+				{				
+					sulLeste = pagina;
+					
+					/*
+					 * Luke, I am your father !
+					 */
+					pagina.setPai(this);
+				}	
+			}
+			else if(pagina.getY() > getY() && pagina.getX() <= getX())
+			{			
+				if (sulOeste != null)
+				{
+					if (sulOeste instanceof ArvoreQuadLocal) 
+					{
+						((ArvoreQuadLocal) sulOeste).add(pagina);				
+					}
+					else
+					{
+						Collection<Pagina> objetos = new ArrayList<Pagina>();
+						objetos.add(pagina);
+						objetos.add(sulOeste);
+						if (pagina.getX().equals(sulOeste.getX()) && pagina.getY().equals(sulOeste.getY()))
+						{
+							throw new Exception("corpos.locais.iguais");
+						}
+						
+						sulOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
+						((ArvoreQuadLocal) sulOeste).add(objetos);
+					}	
+				}
+				else
+				{				
+					sulOeste = pagina;
+					pagina.setPai(this);
+				}	
+			}
+			else if(pagina.getY() <= getY() && pagina.getX() > getX())
+			{
+				if (norteLeste != null)
+				{
+					if (norteLeste instanceof ArvoreQuadLocal) 
+					{
+							((ArvoreQuadLocal) norteLeste).add(pagina);			
+					}
+					else
+					{
+						Collection<Pagina> objetos = new ArrayList<Pagina>();
+						objetos.add(pagina);
+						objetos.add(norteLeste);
+						if (pagina.getX().equals(norteLeste.getX()) && pagina.getY().equals(norteLeste.getY()))
+						{
+							throw new Exception("corpos.locais.iguais");
+						}
+						
+						norteLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getYMinimo(),getY(),this);
+						((ArvoreQuadLocal) norteLeste).add(objetos);
+					}	
+				}
+				else
+				{				
+					norteLeste = pagina;
+					pagina.setPai(this);
+				}	
+			}
+			else if(pagina.getY() <= getY() && pagina.getX() <= getX())
+			{
+				if (norteOeste != null)
+				{
+					if (norteOeste instanceof ArvoreQuadLocal) 
+					{
+								((ArvoreQuadLocal) norteOeste).add(pagina);		
+					}
+					else
+					{
+						Collection<Pagina> objetos = new ArrayList<Pagina>();
+	 					objetos.add(pagina);
+						objetos.add(norteOeste);					
+						if (pagina.getX().equals(norteOeste.getX()) && pagina.getY().equals(norteOeste.getY()))
+						{
+							throw new Exception("corpos.locais.iguais");
+						}
+						
+						norteOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getYMinimo(),getY(),this);
+						((ArvoreQuadLocal) norteOeste).add(objetos);
+					}	
+				}
+				else
+				{				
+					norteOeste = pagina;
+					pagina.setPai(this);
+				}
+			}
+			else
+			{
+				System.err.println("Erro");
+				System.err.println("getY:" + getY() + " pagina.getY():" + pagina.getY() +  " getX:" +getX() + " pagina.getX():" +pagina.getX());
+			}
+		}
 		
-		if(pagina.getY() > getY() && pagina.getX() > getX())
-		{			
-			if (sulLeste != null)
-			{
-				if (sulLeste instanceof ArvoreQuadLocal) 
-				{
-					((ArvoreQuadLocal) sulLeste).add(pagina);				
-				}
-				else
-				{
-					Collection<Pagina> objetos = new ArrayList<Pagina>();
-					objetos.add(pagina);
-					objetos.add(sulLeste);
-					if (pagina.getX().equals(sulLeste.getX()) && pagina.getY().equals(sulLeste.getY()))
-					{
-						throw new Exception("corpos.locais.iguais");
-					}
-					
-					sulLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getY(),getYMaximo(),this);
-					((ArvoreQuadLocal) sulLeste).add(objetos);
-				}	
-			}
-			else
-			{				
-				sulLeste = pagina;
-				
-				/*
-				 * Luke, I am your father !
-				 */
-				pagina.setPai(this);
-			}	
-		}
-		else if(pagina.getY() > getY() && pagina.getX() <= getX())
-		{			
-			if (sulOeste != null)
-			{
-				if (sulOeste instanceof ArvoreQuadLocal) 
-				{
-					((ArvoreQuadLocal) sulOeste).add(pagina);				
-				}
-				else
-				{
-					Collection<Pagina> objetos = new ArrayList<Pagina>();
-					objetos.add(pagina);
-					objetos.add(sulOeste);
-					if (pagina.getX().equals(sulOeste.getX()) && pagina.getY().equals(sulOeste.getY()))
-					{
-						throw new Exception("corpos.locais.iguais");
-					}
-					
-					sulOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
-					((ArvoreQuadLocal) sulOeste).add(objetos);
-				}	
-			}
-			else
-			{				
-				sulOeste = pagina;
-				pagina.setPai(this);
-			}	
-		}
-		else if(pagina.getY() <= getY() && pagina.getX() > getX())
-		{
-			if (norteLeste != null)
-			{
-				if (norteLeste instanceof ArvoreQuadLocal) 
-				{
-						((ArvoreQuadLocal) norteLeste).add(pagina);			
-				}
-				else
-				{
-					Collection<Pagina> objetos = new ArrayList<Pagina>();
-					objetos.add(pagina);
-					objetos.add(norteLeste);
-					if (pagina.getX().equals(norteLeste.getX()) && pagina.getY().equals(norteLeste.getY()))
-					{
-						throw new Exception("corpos.locais.iguais");
-					}
-					
-					norteLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getYMinimo(),getY(),this);
-					((ArvoreQuadLocal) norteLeste).add(objetos);
-				}	
-			}
-			else
-			{				
-				norteLeste = pagina;
-				pagina.setPai(this);
-			}	
-		}
-		else if(pagina.getY() <= getY() && pagina.getX() <= getX())
-		{
-			if (norteOeste != null)
-			{
-				if (norteOeste instanceof ArvoreQuadLocal) 
-				{
-							((ArvoreQuadLocal) norteOeste).add(pagina);		
-				}
-				else
-				{
-					Collection<Pagina> objetos = new ArrayList<Pagina>();
- 					objetos.add(pagina);
-					objetos.add(norteOeste);					
-					if (pagina.getX().equals(norteOeste.getX()) && pagina.getY().equals(norteOeste.getY()))
-					{
-						throw new Exception("corpos.locais.iguais");
-					}
-					
-					norteOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getYMinimo(),getY(),this);
-					((ArvoreQuadLocal) norteOeste).add(objetos);
-				}	
-			}
-			else
-			{				
-				norteOeste = pagina;
-				pagina.setPai(this);
-			}
-		}
-		else
-		{
-			System.err.println("Erro");
-			System.err.println("getY:" + getY() + " pagina.getY():" + pagina.getY() +  " getX:" +getX() + " pagina.getX():" +pagina.getX());
-		}
 	}
 	
 	public void add(Collection<? extends Pagina> paginas) throws Exception
@@ -521,6 +524,18 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			if (corpo.getX() > getX()) {
 				corpo.setX(corpo.getX() - corpo.getDeslocamento());
 			}
+		}
+		
+		if (!verficarPosicao(corpo))
+		{
+			ArvoreQuadLocal raiz = corpo.getPai();
+			
+			while (raiz.getPai() != null)
+			{
+				raiz = raiz.getPai();
+			}
+			
+			raiz.add(corpo);
 		}
 
 	}

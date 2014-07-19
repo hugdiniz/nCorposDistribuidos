@@ -1,12 +1,8 @@
 package entidades;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import eo.DirecaoEnum;
 
 
 public abstract class ArvoreQuad extends Pagina
