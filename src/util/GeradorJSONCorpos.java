@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.json.JSONArray;
 
+import core.Constantes;
 import entidades.Corpo;
 import eo.DirecaoEnum;
 
@@ -17,7 +18,7 @@ public class GeradorJSONCorpos
 	{
 		try
 		{
-			GeradorJSONCorposArquivo("src/arquivos/100Corpos.json", 100, 1000, 1000, 40);
+			GeradorJSONCorposArquivo(Constantes.nomeEnderecoArquivoGerado, Constantes.quantidadeCorposGerados, Constantes.xMaximoCorpoGerado, Constantes.xMaximoCorpoGerado, Constantes.massaCorpoGerado);
 		}
 		catch (IOException e)
 		{			

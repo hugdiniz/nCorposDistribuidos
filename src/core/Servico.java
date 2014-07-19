@@ -48,7 +48,7 @@ public class Servico
 		/*
 		 * TODO: Criar uma heuristica para gerar dinamicamente o limite do campo da arvore quad
 		 */
-		ArvoreQuadLocal arvoreQuad = new ArvoreQuadLocal(0.0, 1000.0, 0.0, 1000.0,null);		
+		ArvoreQuadLocal arvoreQuad = new ArvoreQuadLocal(Constantes.xMinimoArvore, Constantes.xMaximoArvore, Constantes.yMinimoArvore, Constantes.yMaximoArvore,null);		
 		arvoreQuad.add(corpos);		
 		return arvoreQuad;		
 	}

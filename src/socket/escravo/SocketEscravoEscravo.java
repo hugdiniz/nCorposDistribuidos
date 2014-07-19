@@ -11,6 +11,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import entidades.Corpo;
+import entidades.Pagina;
 import eo.ComunicacaoEnum;
 
 public class SocketEscravoEscravo extends Thread
@@ -69,6 +70,11 @@ public class SocketEscravoEscravo extends Thread
 		{			
 			e.printStackTrace();
 		}   
+	}
+	
+	public void addCorpoEscravo(Pagina pagina) 
+	{
+		ps.println(pagina.toJsonObject());
 	}
 	
 	private void executar(String msg) throws Exception

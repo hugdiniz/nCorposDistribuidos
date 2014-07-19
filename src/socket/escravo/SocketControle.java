@@ -53,6 +53,18 @@ public class SocketControle extends Thread
                 
 		super.run();
 	}
+	public void addPagina(Long idEscravo, Pagina pagina) throws Exception
+	{
+		SocketEscravoEscravo socketEscravoEscravo = sockets.get(idEscravo);
+		if (socketEscravoEscravo != null)
+		{
+			socketEscravoEscravo.addCorpoEscravo(pagina);
+		}
+		else
+		{
+			throw new Exception("socketControle.idEscravo.Errado");
+		}	
+	}
 	
 	public Corpo getCorpoMedio(Long id,String endereco) throws Exception
 	{

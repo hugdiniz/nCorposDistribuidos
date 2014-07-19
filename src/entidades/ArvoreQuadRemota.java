@@ -50,9 +50,9 @@ public class ArvoreQuadRemota extends ArvoreQuad
 	}
 	
 	@Override
-	public void add(Pagina pagina)
+	public void add(Pagina pagina) throws Exception
 	{
-		// TODO Auto-generated method stub
+		SocketControle.getInstance().addPagina(id, pagina);
 		
 	}
 
