@@ -75,40 +75,41 @@ public class Servico
 		{
 			SocketMestreEscravo socketMestreEscravo = socketMestreEscravos.get(prox);
 			Pagina parte = iteratorPagina.next();
-			
-			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());
-			if (parte instanceof ArvoreQuadLocal)
+			if (parte != null) 
 			{
-				arvoreEscravo.add(((ArvoreQuadLocal) parte).getCorpos());
-			}
-			else
-			{
-				arvoreEscravo.add(parte);
-			}
-			
-			
-			/*
-			 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
-			 */
-			for (ArvoreQuadLocal arvore : mapa.values())
-			{
-				if (arvore != arvoreEscravo)
+				ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());
+				if (parte instanceof ArvoreQuadLocal)
 				{
-					ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), arvore);
-					arvore.add(arvoreQuadRemota);
+					arvoreEscravo.add(((ArvoreQuadLocal) parte).getCorpos());
 				}
-			}
-			
-			prox++;	
-			
-			/*
-				caso ele ultrapasse o numero de sockets
-			*/						
-			if (socketMestreEscravos.size() <= prox)
-			 {
-				prox = 0;
-			}	
-		
+				else
+				{
+					arvoreEscravo.add(parte);
+				}
+				
+				
+				/*
+				 * Criando arvores remotas para os outros escravos a partir da arvore que o escravo em questao ficou responsavel 			
+				 */
+				for (ArvoreQuadLocal arvore : mapa.values())
+				{
+					if (arvore != arvoreEscravo)
+					{
+						ArvoreQuadRemota arvoreQuadRemota = new ArvoreQuadRemota(socketMestreEscravo.getIdSocket(), socketMestreEscravo.getIp(), parte.getXMaximo(), parte.getXMinimo(), parte.getYMaximo(), parte.getYMinimo(), arvore);
+						arvore.add(arvoreQuadRemota);
+					}
+				}
+				
+				prox++;	
+				
+				/*
+					caso ele ultrapasse o numero de sockets
+				*/						
+				if (socketMestreEscravos.size() <= prox)
+				 {
+					prox = 0;
+				}	
+			}		
 		}
 		
 		

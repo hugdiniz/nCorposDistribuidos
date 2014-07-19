@@ -6,10 +6,10 @@ public class Constantes
 	 * Constantes do Mestre
 	 */
 	
-	public static String enderecoArquivoCorpos = "src/arquivos/100Corpos.json";
+	public static String enderecoArquivoCorpos = "src/arquivos/10000Corpos.json";
 	public static String enderecoMestre = "127.0.0.1";
 	public static Integer portaMestre = 7000;
-	public static Integer quantidadeEscravo = 1;
+	public static Integer quantidadeEscravo = 2;
 	public static Integer tempo = 9;
 	public static Double xMaximoArvore = 1000000.0;
 	public static Double yMaximoArvore = 1000000.0;

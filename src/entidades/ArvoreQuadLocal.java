@@ -104,9 +104,9 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			{			
 				if (sulLeste != null)
 				{
-					if (sulLeste instanceof ArvoreQuadLocal) 
+					if (sulLeste instanceof ArvoreQuad) 
 					{
-						((ArvoreQuadLocal) sulLeste).add(pagina);				
+						((ArvoreQuad) sulLeste).add(pagina);				
 					}
 					else
 					{
@@ -115,7 +115,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 						objetos.add(sulLeste);
 						if (pagina.getX().equals(sulLeste.getX()) && pagina.getY().equals(sulLeste.getY()))
 						{
-							throw new Exception("corpos.locais.iguais");
+							Calculo.CalculoColisao((Corpo)pagina, (Corpo)sulLeste);
 						}
 						
 						sulLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getY(),getYMaximo(),this);
@@ -136,9 +136,9 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			{			
 				if (sulOeste != null)
 				{
-					if (sulOeste instanceof ArvoreQuadLocal) 
+					if (sulOeste instanceof ArvoreQuad) 
 					{
-						((ArvoreQuadLocal) sulOeste).add(pagina);				
+						((ArvoreQuad) sulOeste).add(pagina);				
 					}
 					else
 					{
@@ -147,7 +147,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 						objetos.add(sulOeste);
 						if (pagina.getX().equals(sulOeste.getX()) && pagina.getY().equals(sulOeste.getY()))
 						{
-							throw new Exception("corpos.locais.iguais");
+							Calculo.CalculoColisao((Corpo)pagina, (Corpo)sulOeste);
 						}
 						
 						sulOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getY(),getYMaximo(),this);
@@ -164,9 +164,9 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			{
 				if (norteLeste != null)
 				{
-					if (norteLeste instanceof ArvoreQuadLocal) 
+					if (norteLeste instanceof ArvoreQuad) 
 					{
-							((ArvoreQuadLocal) norteLeste).add(pagina);			
+							((ArvoreQuad) norteLeste).add(pagina);			
 					}
 					else
 					{
@@ -175,7 +175,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 						objetos.add(norteLeste);
 						if (pagina.getX().equals(norteLeste.getX()) && pagina.getY().equals(norteLeste.getY()))
 						{
-							throw new Exception("corpos.locais.iguais");
+							Calculo.CalculoColisao((Corpo)pagina, (Corpo)norteLeste);
 						}
 						
 						norteLeste = new ArvoreQuadLocal(getX(),getXMaximo(),getYMinimo(),getY(),this);
@@ -192,9 +192,9 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			{
 				if (norteOeste != null)
 				{
-					if (norteOeste instanceof ArvoreQuadLocal) 
+					if (norteOeste instanceof ArvoreQuad) 
 					{
-								((ArvoreQuadLocal) norteOeste).add(pagina);		
+								((ArvoreQuad) norteOeste).add(pagina);		
 					}
 					else
 					{
@@ -203,7 +203,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 						objetos.add(norteOeste);					
 						if (pagina.getX().equals(norteOeste.getX()) && pagina.getY().equals(norteOeste.getY()))
 						{
-							throw new Exception("corpos.locais.iguais");
+							Calculo.CalculoColisao((Corpo)pagina, (Corpo)norteOeste);
 						}
 						
 						norteOeste = new ArvoreQuadLocal(getXMinimo(),getX(),getYMinimo(),getY(),this);
@@ -529,6 +529,8 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		if (!verficarPosicao(corpo))
 		{
 			ArvoreQuadLocal raiz = corpo.getPai();
+			removerCorpoArvore(corpo, raiz);
+			
 			
 			while (raiz.getPai() != null)
 			{
@@ -539,6 +541,27 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		}
 
 	}
+	private void removerCorpoArvore(Corpo corpo, ArvoreQuadLocal arvoreQuadLocal) 
+	{
+		if (corpo == arvoreQuadLocal.norteLeste)
+		{
+			arvoreQuadLocal.norteLeste = null;
+		}
+		else if (corpo == arvoreQuadLocal.norteOeste)
+		{
+			arvoreQuadLocal.norteOeste = null;
+		}
+		else if (corpo == arvoreQuadLocal.sulLeste)
+		{
+			arvoreQuadLocal.sulLeste = null;
+		}
+		else if (corpo == arvoreQuadLocal.sulOeste)
+		{
+			arvoreQuadLocal.sulOeste = null;
+		}
+
+	}
+	
 	
 	public void atualizarArvore() throws Exception 
 	{
