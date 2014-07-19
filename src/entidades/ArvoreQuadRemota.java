@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import core.Constantes;
 import socket.escravo.SocketControle;
 
 public class ArvoreQuadRemota extends ArvoreQuad
@@ -16,7 +17,15 @@ public class ArvoreQuadRemota extends ArvoreQuad
 
 	public ArvoreQuadRemota(Long id, String endereco,Double xMaximo,Double xMinimo,Double yMaximo,Double yMinimo,ArvoreQuadLocal pai)
 	{
-		this.endereco = endereco;
+		if (endereco.contains("127.0.0.1"))
+		{
+			this.endereco = Constantes.enderecoMestre;
+		}
+		else
+		{
+			this.endereco = endereco;
+		}
+		
 		this.id = id;
 		this.y = yMinimo + yMaximo / 2;
 		this.x = xMinimo + xMaximo / 2;

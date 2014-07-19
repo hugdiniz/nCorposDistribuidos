@@ -7,7 +7,7 @@ public class Constantes
 	 */
 	
 	public static String enderecoArquivoCorpos = "src/arquivos/10000Corpos.json";
-	public static String enderecoMestre = "127.0.0.1";
+	public static String enderecoMestre = "192.168.0.11"; //Nao utilizar 127.0.0.1
 	public static Integer portaMestre = 7000;
 	public static Integer quantidadeEscravo = 2;
 	public static Integer tempo = 9;
