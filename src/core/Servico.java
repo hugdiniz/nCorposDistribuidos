@@ -49,8 +49,7 @@ public class Servico
 		 * TODO: Criar uma heuristica para gerar dinamicamente o limite do campo da arvore quad
 		 */
 		ArvoreQuadLocal arvoreQuad = new ArvoreQuadLocal(0.0, 1000.0, 0.0, 1000.0,null);		
-		arvoreQuad.add(corpos);
-		arvoreQuad.print();
+		arvoreQuad.add(corpos);		
 		return arvoreQuad;		
 	}
 	
@@ -74,11 +73,10 @@ public class Servico
 		Iterator<Pagina> iteratorPagina = partes.iterator();
 		while (iteratorPagina.hasNext()) 
 		{
-			SocketMestreEscravo socketMestreEscravo = socketMestreEscravos.get(prox);					
+			SocketMestreEscravo socketMestreEscravo = socketMestreEscravos.get(prox);
+			Pagina parte = iteratorPagina.next();
 			
 			ArvoreQuadLocal arvoreEscravo = mapa.get(socketMestreEscravo.getIdSocket());
-			Pagina parte = iteratorPagina.next();			
-			
 			if (parte instanceof ArvoreQuadLocal)
 			{
 				arvoreEscravo.add(((ArvoreQuadLocal) parte).getCorpos());

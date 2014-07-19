@@ -291,92 +291,11 @@ public class ArvoreQuadLocal extends ArvoreQuad
 		return jsonArray;
 	}
 	
-	public Collection<Corpo> getCorposPaiMedio() throws Exception
-	{
-		Pagina norteLeste, norteOeste, sulLeste, sulOeste;
-		norteLeste = pai.getNorteLeste();
-		norteOeste = pai.getNorteOeste();
-		sulLeste = pai.getSulLeste();
-		sulOeste = pai.getSulOeste();
-		Collection<Corpo> corpos = new ArrayList<Corpo>();
-		if (norteOeste != null && norteOeste != this)
-		{
-			if (norteOeste instanceof Corpo)
-			{
-				corpos.add((Corpo) norteOeste);
-			}
-			else if (norteOeste instanceof ArvoreQuadLocal)
-			{
-				corpos.addAll(((ArvoreQuadLocal) norteOeste).getCorposPaiMedio());
-			}
-			else if (norteOeste instanceof ArvoreQuadRemota)
-			{
-				corpos.add(((ArvoreQuadRemota) norteOeste).getCorpoMedio());
-			} 
-			else 
-			{
-				throw new Exception("arvoreQuadLocal.getCorpoPaiMedio.pagina.nao.identificada");
-			}			
-		}
-		if (norteLeste != null && norteLeste != this)
-		{
-			if (norteLeste instanceof Corpo)
-			{
-				corpos.add((Corpo) norteLeste);
-			}
-			else if (norteLeste instanceof ArvoreQuadLocal)
-			{
-				corpos.addAll(((ArvoreQuadLocal) norteLeste).getCorposPaiMedio());
-			}
-			else if (norteLeste instanceof ArvoreQuadRemota)
-			{
-				corpos.add(((ArvoreQuadRemota) norteLeste).getCorpoMedio());
-			} 
-			else 
-			{
-				throw new Exception("arvoreQuadLocal.getCorpoPaiMedio.pagina.nao.identificada");
-			}			
-		}
-		if (sulOeste != null && sulOeste != this)
-		{
-			if (sulOeste instanceof Corpo)
-			{
-				corpos.add((Corpo) sulOeste);
-			}
-			else if (sulOeste instanceof ArvoreQuadLocal)
-			{
-				corpos.addAll(((ArvoreQuadLocal) sulOeste).getCorposPaiMedio());
-			}
-			else if (sulOeste instanceof ArvoreQuadRemota)
-			{
-				corpos.add(((ArvoreQuadRemota) sulOeste).getCorpoMedio());
-			} 
-			else 
-			{
-				throw new Exception("arvoreQuadLocal.getCorpoPaiMedio.pagina.nao.identificada");
-			}
-		}
-		if (sulLeste != null && sulLeste != this)
-		{
-			if (sulLeste instanceof Corpo)
-			{
-				corpos.add((Corpo) sulLeste);
-			}
-			else if (sulLeste instanceof ArvoreQuadLocal)
-			{
-				corpos.addAll(((ArvoreQuadLocal) sulLeste).getCorposPaiMedio());
-			}
-			else if (sulLeste instanceof ArvoreQuadRemota)
-			{
-				corpos.add(((ArvoreQuadRemota) sulLeste).getCorpoMedio());
-			} 
-			else 
-			{
-				throw new Exception("arvoreQuadLocal.getCorpoPaiMedio.pagina.nao.identificada");
-			}
-		}
-		return corpos;
-	}
+	
+	
+	
+	
+	
 	
 	public Collection<Corpo> getCorpos() 
 	{
@@ -462,8 +381,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			jsonObject.append("norteLeste", norteLesteObject);
 		}
 		else if(norteLeste instanceof ArvoreQuadLocal)
-		{
-			System.out.println(getX() +" "+ getY());
+		{			
 			JSONObject norteLesteObject = new JSONObject();
 			norteLesteObject.append("ArvoreQuadLocal", norteLeste.toJsonObject());
 			jsonObject.append("norteLeste", norteLesteObject);
@@ -482,8 +400,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			jsonObject.append("norteOeste", norteOesteObject);
 		}
 		else if(norteOeste instanceof ArvoreQuadLocal)
-		{
-			System.out.println(getX() +" "+ getY());
+		{			
 			JSONObject norteOesteObject = new JSONObject();
 			norteOesteObject.append("ArvoreQuadLocal", norteOeste.toJsonObject());
 			jsonObject.append("norteOeste", norteOesteObject);
@@ -502,8 +419,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			jsonObject.append("sulOeste", sulOesteObject);
 		}
 		else if(sulOeste instanceof ArvoreQuadLocal)
-		{
-			System.out.println(getX() +" "+ getY());
+		{			
 			JSONObject sulOesteObject = new JSONObject();
 			sulOesteObject.append("ArvoreQuadLocal", sulOeste.toJsonObject());
 			jsonObject.append("sulOeste", sulOesteObject);
@@ -522,8 +438,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 			jsonObject.append("sulLeste", sulLesteObject);
 		}
 		else if(sulLeste instanceof ArvoreQuadLocal)
-		{
-			System.out.println(getX() +" "+ getY());
+		{			
 			JSONObject sulLesteObject = new JSONObject();
 			sulLesteObject.append("ArvoreQuadLocal", sulLeste.toJsonObject());
 			jsonObject.append("sulLeste", sulLesteObject);

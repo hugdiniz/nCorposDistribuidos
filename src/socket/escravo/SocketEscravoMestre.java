@@ -38,9 +38,7 @@ public class SocketEscravoMestre extends Thread
 		 * Espera os corpos para montar a arvore.
 		 */		
 		String corposString = entrada.readLine();
-		ArvoreQuadLocal arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));		
-		start();
-				
+		ArvoreQuadLocal arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));	
 		return arvoreQuad;   
 	}
 	
@@ -54,8 +52,6 @@ public class SocketEscravoMestre extends Thread
 			msg = entrada.readLine();
 			while(msg != null)
 			{
-				System.out.println(msg);
-				
 				msg = entrada.readLine();
 			}
 		}

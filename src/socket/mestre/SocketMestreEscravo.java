@@ -54,7 +54,7 @@ public class SocketMestreEscravo extends Thread
 			e.printStackTrace();
 		}   
 	}
-	private void executar(String msg) 
+	private void executar(String msg) throws IOException 
 	{
 		if (ComunicacaoEnum.OIMESTRE.toString().equals(msg))
 		{
@@ -73,9 +73,10 @@ public class SocketMestreEscravo extends Thread
 			ps.println(pagina.toJsonObject());
 		}
 	}
-	public void proximaAtualizacao()
+	public void proximaAtualizacao() throws IOException
 	{
 		ps.println(ComunicacaoEnum.PROXIMAATUALIZACAO.toString());
+		socket.getOutputStream().flush();		
 	}
 	
 	public Long getIdEscravo()

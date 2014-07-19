@@ -10,11 +10,9 @@ public class Calculo
 {
 	public static void atualizaForca(Corpo corpo) throws Exception
 	{
-		ArvoreQuadLocal pai = corpo.getPai();
-		Collection<Corpo> corpos = pai.getCorpos();
-		corpos.remove(corpo);
 		
-		corpos.addAll(pai.getCorposPaiMedio());		
+		Collection<Corpo> corpos = corpo.getCorposArvoreCompleta();
+				
 		
 		Double forca = corpo.getForca();
 		

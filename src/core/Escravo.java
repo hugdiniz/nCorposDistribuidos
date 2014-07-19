@@ -26,7 +26,7 @@ public class Escravo
 		socket = new Socket(Constantes.enderecoMestre,Constantes.portaMestre);  
         SocketEscravoMestre socketEscravoMestre = new SocketEscravoMestre(socket);
         arvoreQuadLocal = socketEscravoMestre.iniciarConversaMestre();        
-       System.out.println();
+       
         SocketControle.getInstance().start();
         
         while (true)
