@@ -18,6 +18,7 @@ public class Corpo extends Pagina
 	{
 		forca = new Double(0);
 		deslocamento = new Double(0);
+		velocidade = new Double(0);
 	}
 	public Corpo(JSONObject jsonObject)
 	{
