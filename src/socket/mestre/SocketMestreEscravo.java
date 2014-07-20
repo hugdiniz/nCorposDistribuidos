@@ -32,6 +32,7 @@ public class SocketMestreEscravo extends Thread
 		id = Util.gerarId();
 		this.socket = socket;
 		ps = new PrintStream(socket.getOutputStream());
+		ps.println(id);
 		this.mestre = mestre;
 	}
 	

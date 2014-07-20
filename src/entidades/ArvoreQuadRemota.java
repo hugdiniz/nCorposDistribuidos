@@ -17,13 +17,14 @@ public class ArvoreQuadRemota extends ArvoreQuad
 
 	public ArvoreQuadRemota(Long id, String endereco,Double xMaximo,Double xMinimo,Double yMaximo,Double yMinimo,ArvoreQuadLocal pai)
 	{
+		
 		if (endereco.contains("127.0.0.1"))
 		{
 			this.endereco = Constantes.enderecoMestre;
 		}
 		else
 		{
-			this.endereco = endereco;
+			this.endereco = endereco.replace("/", "");
 		}
 		
 		this.id = id;

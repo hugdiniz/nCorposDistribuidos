@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import core.Escravo;
 import entidades.Corpo;
 import entidades.Pagina;
 import eo.ComunicacaoEnum;
@@ -22,12 +23,26 @@ public class SocketEscravoEscravo extends Thread
 	Long idEscravo;
 	List<Corpo> corposRecebidos;
 
-	public SocketEscravoEscravo(Socket socket) throws IOException
+	public SocketEscravoEscravo(Socket socket) throws Exception
 	{
 		corposRecebidos = new ArrayList<Corpo>();
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream()); 
         entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        ps.println(Escravo.getId());
+        String msg = entrada.readLine();			
+		
+        /*
+		 * Primeira msg sempre sera o seu id
+		 */
+		try
+		{
+			idEscravo = Long.parseLong(msg);
+		}
+		catch (Exception e)
+		{
+			throw new Exception("erro.recuperar.id.escravo");
+		}
         
 	}
 	
@@ -38,20 +53,9 @@ public class SocketEscravoEscravo extends Thread
 		
 		try
 		{
-			String msg = entrada.readLine();			
-			/*
-			 * Primeira msg sempre sera o seu id
-			 */
-			try
-			{
-				idEscravo = Long.parseLong(msg);
-			}
-			catch (Exception e)
-			{
-				throw new Exception("erro.recuperar.id.escravo");
-			}
 			
 			
+			String msg = new String();
 			while(msg != null)
 			{
 				msg = entrada.readLine();
@@ -90,11 +94,11 @@ public class SocketEscravoEscravo extends Thread
 		}
 		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
 		{
-			
+			ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio());
 		} 
 		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
 		{
-			
+			throw new Exception("socket.escravo.escravo.executar.nao.implementado");
 		} 		
 		else 
 		{

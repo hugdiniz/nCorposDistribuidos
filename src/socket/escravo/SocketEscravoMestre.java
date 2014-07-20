@@ -21,6 +21,7 @@ public class SocketEscravoMestre extends Thread
 	Socket socket;
 	PrintStream ps;
 	BufferedReader entrada;
+	Long id;
 	
 	public SocketEscravoMestre(Socket socket) throws Exception
 	{
@@ -32,7 +33,14 @@ public class SocketEscravoMestre extends Thread
 	
 	public ArvoreQuadLocal iniciarConversaMestre() throws Exception 
 	{
-		ps.println(ComunicacaoEnum.OIMESTRE.toString()); 
+		ps.println(ComunicacaoEnum.OIMESTRE.toString());		
+		try 
+		{
+			id = Long.parseLong(entrada.readLine());
+		} catch (Exception e)
+		{
+			throw new Exception("socketEscravoMestre.iniciarConversaMestre.erro.id.nao.reconhecido");
+		}
 		
 		/*
 		 * Espera os corpos para montar a arvore.
@@ -40,6 +48,11 @@ public class SocketEscravoMestre extends Thread
 		String corposString = entrada.readLine();
 		ArvoreQuadLocal arvoreQuad = ArvoreQuad.montarArvore(new JSONObject(corposString));	
 		return arvoreQuad;   
+	}
+	
+	public Long getIdEscravo() 
+	{
+		return id;
 	}
 	
 	@Override

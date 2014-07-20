@@ -19,14 +19,15 @@ public class Escravo
         	e.printStackTrace();
         }
 	}
-	ArvoreQuadLocal arvoreQuadLocal;
+	private static Long id = null;
+	private static ArvoreQuadLocal arvoreQuadLocal;
 	public Escravo() throws Exception
 	{
 		Socket socket = null;
 		socket = new Socket(Constantes.enderecoMestre,Constantes.portaMestre);  
         SocketEscravoMestre socketEscravoMestre = new SocketEscravoMestre(socket);
         arvoreQuadLocal = socketEscravoMestre.iniciarConversaMestre();        
-       
+        id = socketEscravoMestre.getIdEscravo();
         SocketControle.getInstance().start();
         
         while (true)
@@ -35,6 +36,13 @@ public class Escravo
 			socketEscravoMestre.finalizarExecucao();
 			arvoreQuadLocal.add(SocketControle.getInstance().getCorposRecebido());			
 		}
+	}
+	public static Long getId() 
+	{
+		return id;
+	}
+	public static ArvoreQuadLocal getArvoreQuadLocal() {
+		return arvoreQuadLocal;
 	}
 	
 
