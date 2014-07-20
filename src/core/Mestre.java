@@ -79,9 +79,9 @@ public class Mestre
 		escravosExecucaoFinalizada.put(idEscravo, Boolean.TRUE);
 		if (!escravosExecucaoFinalizada.containsKey(Boolean.FALSE)) 
 		{
+			gerarTempo();
 			for (SocketMestreEscravo socketMestreEscravo : controles) 
-			{
-				gerarTempo();
+			{				
 				socketMestreEscravo.proximaAtualizacao();
 				escravosExecucaoFinalizada.put(socketMestreEscravo.getIdEscravo(), Boolean.FALSE);
 			}
