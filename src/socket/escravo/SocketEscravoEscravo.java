@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.json.JSONObject;
 
@@ -21,11 +23,11 @@ public class SocketEscravoEscravo extends Thread
 	PrintStream ps;
 	BufferedReader entrada;
 	Long idEscravo;
-	List<Corpo> corposRecebidos;
+	Queue<Corpo> corposRecebidos; 
 
 	public SocketEscravoEscravo(Socket socket) throws Exception
 	{
-		corposRecebidos = new ArrayList<Corpo>();
+		corposRecebidos = new LinkedList<Corpo>();
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream()); 
         entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -117,8 +119,11 @@ public class SocketEscravoEscravo extends Thread
 	}
 	public List pollCorposRecebidos() 
 	{
-		List<Corpo> corposRetirados = corposRecebidos.subList(0, corposRecebidos.size());
-		corposRecebidos.clear();
+		List<Corpo> corposRetirados = new ArrayList();
+		while (!corposRecebidos.isEmpty())
+		{
+			corposRetirados.add(corposRecebidos.poll());
+		}
 		return corposRetirados;
 	}
 	
