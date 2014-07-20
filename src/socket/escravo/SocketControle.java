@@ -81,7 +81,7 @@ public class SocketControle extends Thread
 	}
 	public Collection getCorposRecebido()
 	{
-		corpos.clear();
+		corpos = new ArrayList<Corpo>();
 		
 		for (SocketEscravoEscravo socketEscravoEscravo : sockets.values())
 		{

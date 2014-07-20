@@ -94,7 +94,7 @@ public class SocketEscravoEscravo extends Thread
 		}
 		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
 		{
-			ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio());
+			ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio().toJsonObject());
 		} 
 		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
 		{
