@@ -16,7 +16,8 @@ public class Corpo extends Pagina
 	
 	public Corpo()
 	{
-		// TODO Auto-generated constructor stub
+		forca = new Double(0);
+		deslocamento = new Double(0);
 	}
 	public Corpo(JSONObject jsonObject)
 	{
