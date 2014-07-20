@@ -78,33 +78,52 @@ public class SocketEscravoEscravo extends Thread
 		}   
 	}
 	
-	public void addCorpoEscravo(Pagina pagina) 
+	public void addCorpoEscravo(Pagina pagina) throws Exception 
 	{
 		ps.println(pagina.toJsonObject());
+		String msg = entrada.readLine();
+		if (msg != null && msg.equals(ComunicacaoEnum.REENVIAR))
+		{
+			addCorpoEscravo(pagina);
+		}
 	}
 	
 	private void executar(String msg) throws Exception
 	{
-		ComunicacaoEnum comunicacaoEnum = ComunicacaoEnum.valueOf(msg);
-		if (comunicacaoEnum.equals(ComunicacaoEnum.SETCORPO))
+		if (msg != null) 
 		{
-			String corpoString = entrada.readLine();
-			JSONObject jsonObject = new JSONObject(corpoString);
-			Corpo corpo = new Corpo(jsonObject);
-			corposRecebidos.add(corpo);
-			
+			try 
+			{
+				ComunicacaoEnum comunicacaoEnum = ComunicacaoEnum.valueOf(msg);
+				if (comunicacaoEnum.equals(ComunicacaoEnum.SETCORPO))
+				{
+					String corpoString = entrada.readLine();
+					JSONObject jsonObject = new JSONObject(corpoString);
+					Corpo corpo = new Corpo(jsonObject);
+					corposRecebidos.add(corpo);					
+					ps.println(ComunicacaoEnum.OK.toString());
+					
+				}
+				else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
+				{
+					ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio().toJsonObject());
+				} 
+				else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
+				{
+					throw new Exception("socket.escravo.escravo.executar.nao.implementado");
+				}
+				else
+				{
+					throw new Exception("socket.escravo.escravo.executar.mensagem.sem.identificacao");
+				}	
+			} catch (Exception e) 
+			{
+				throw new Exception("socket.escravo.escravo.executar.mensagem.sem.identificacao");
+			}
 		}
-		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
-		{
-			ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio().toJsonObject());
-		} 
-		else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
-		{
-			throw new Exception("socket.escravo.escravo.executar.nao.implementado");
-		} 		
 		else 
 		{
-			throw new Exception("socket.escravo.escravo.executar.mensagem.sem.identificacao");
+			ps.println(ComunicacaoEnum.REENVIAR.toString());
 		}
 
 	}
@@ -131,9 +150,16 @@ public class SocketEscravoEscravo extends Thread
 	{
 		ps.println(ComunicacaoEnum.GETCORPOMEDIO);
 		String msg = entrada.readLine();
-		JSONObject jsonObject = new JSONObject(msg);
-		Corpo corpo = new Corpo(jsonObject);
-		return corpo;
+		if (msg.equals(ComunicacaoEnum.REENVIAR.toString()))
+		{
+			return getCorpoMedio();
+		}
+		else
+		{
+			JSONObject jsonObject = new JSONObject(msg);
+			Corpo corpo = new Corpo(jsonObject);
+			return corpo;
+		}		
 	}
 	public void finalizarExecucao()
 	{ 
