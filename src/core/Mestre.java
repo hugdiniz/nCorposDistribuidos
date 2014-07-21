@@ -41,7 +41,7 @@ public class Mestre
         BufferedReader entrada = null;
         
 		ArvoreQuadLocal arvoreQuad = Servico.getInstance().recuperarArquivoJSonCorpos(Constantes.enderecoArquivoCorpos);        	
-		//Map<Long,ArvoreQuadLocal> mapaArvore = Servico.getInstance().splitArvoreQuad(arvoreQuad, controles);
+		
         serv = new ServerSocket(Constantes.portaMestre); 
         System.out.println("iniciado com sucesso !!!");  
         
@@ -67,6 +67,7 @@ public class Mestre
 						corpoMap.put(corpo.toString(), corpo);
 					}
             		 socketMestreEscravo.enviarArvore(mapaArvore.get(socketMestreEscravo.getIdSocket()));
+            		 Thread.sleep(50);
             	 }
             	 dataUltimaAtualizacao = new Date();
             }	

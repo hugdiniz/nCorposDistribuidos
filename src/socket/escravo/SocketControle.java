@@ -1,8 +1,10 @@
 package socket.escravo;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class SocketControle extends Thread
 		 * Construtor privado pois, a instancia desta classe e unica.
 		 */
 	}
-	private  Map<Long,SocketEscravoEscravo>sockets = new HashMap<Long,SocketEscravoEscravo>();	
+	private static Map<Long,SocketEscravoEscravo>sockets = new HashMap<Long,SocketEscravoEscravo>();	
 	private Collection<Corpo> corpos = new ArrayList<Corpo>();
 	private static SocketControle socketControle;
 	
@@ -53,6 +55,17 @@ public class SocketControle extends Thread
                 
 		super.run();
 	}
+	public static SocketEscravoEscravo getSocketEscravoEscravo(Long id,String endereco) throws Exception
+	{
+		if (sockets.get(id) == null)
+		{	
+			Socket socket = new Socket(endereco, 7001);
+			SocketEscravoEscravo socketEscravoEscravo = new SocketEscravoEscravo(socket);
+			sockets.put(id, socketEscravoEscravo);
+		}
+		return sockets.get(id);
+	}
+	
 	public void addPagina(Long idEscravo, Pagina pagina) throws Exception
 	{
 		SocketEscravoEscravo socketEscravoEscravo = sockets.get(idEscravo);

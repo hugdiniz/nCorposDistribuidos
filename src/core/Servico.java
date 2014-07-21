@@ -63,6 +63,7 @@ public class Servico
 		
 		//gerarArvoreVazia(quantidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo());
 		
+		Thread.sleep(100);
 		for (SocketMestreEscravo socketMestreEscravo : socketMestreEscravos)
 		{
 			mapa.put(socketMestreEscravo.getIdSocket(), gerarArvoreVazia(profundidade, arvoreQuadLocal.getXMinimo(), arvoreQuadLocal.getXMaximo(), arvoreQuadLocal.getYMinimo(), arvoreQuadLocal.getXMaximo()));

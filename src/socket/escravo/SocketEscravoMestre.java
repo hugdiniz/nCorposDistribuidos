@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import core.Escravo;
 import entidades.ArvoreQuad;
 import entidades.ArvoreQuadLocal;
 import entidades.Corpo;
@@ -33,14 +34,8 @@ public class SocketEscravoMestre extends Thread
 	
 	public ArvoreQuadLocal iniciarConversaMestre() throws Exception 
 	{
-		ps.println(ComunicacaoEnum.OIMESTRE.toString());		
-		try 
-		{
-			id = Long.parseLong(entrada.readLine());
-		} catch (Exception e)
-		{
-			throw new Exception("socketEscravoMestre.iniciarConversaMestre.erro.id.nao.reconhecido");
-		}
+		ps.println(ComunicacaoEnum.OIMESTRE.toString());
+		ps.println(Escravo.getId());			
 		
 		/*
 		 * Espera os corpos para montar a arvore.

@@ -31,14 +31,15 @@ public class SocketEscravoEscravo extends Thread
 		this.socket = socket;
         ps = new PrintStream(socket.getOutputStream()); 
         entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        ps.println(Escravo.getId());
-        String msg = entrada.readLine();			
-		
+        enviarId();
+        
         /*
 		 * Primeira msg sempre sera o seu id
 		 */
+        
+        String msg = entrada.readLine();        
 		try
-		{
+		{				
 			idEscravo = Long.parseLong(msg);
 		}
 		catch (Exception e)
@@ -46,6 +47,11 @@ public class SocketEscravoEscravo extends Thread
 			throw new Exception("erro.recuperar.id.escravo");
 		}
         
+	}
+	
+	private void enviarId() 
+	{
+		  ps.println(Escravo.getId());
 	}
 	
 	@Override
@@ -107,7 +113,11 @@ public class SocketEscravoEscravo extends Thread
 				else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOMEDIO)) 
 				{
 					ps.println(Escravo.getArvoreQuadLocal().getCorpoMedio().toJsonObject());
-				} 
+				}
+				else if (comunicacaoEnum.equals(ComunicacaoEnum.REENVIAR_ID)) 
+				{
+					enviarId();
+				}
 				else if (comunicacaoEnum.equals(ComunicacaoEnum.GETCORPOS)) 
 				{
 					throw new Exception("socket.escravo.escravo.executar.nao.implementado");
@@ -118,6 +128,7 @@ public class SocketEscravoEscravo extends Thread
 				}	
 			} catch (Exception e) 
 			{
+				
 				throw new Exception("socket.escravo.escravo.executar.mensagem.sem.identificacao");
 			}
 		}
@@ -150,15 +161,49 @@ public class SocketEscravoEscravo extends Thread
 	{
 		ps.println(ComunicacaoEnum.GETCORPOMEDIO);
 		String msg = entrada.readLine();
-		if (msg.equals(ComunicacaoEnum.REENVIAR.toString()))
+		if (msg != null && msg.equals(ComunicacaoEnum.REENVIAR.toString()))
 		{
-			return getCorpoMedio();
+			return getCorpoMedio(Boolean.TRUE);
 		}
 		else
 		{
-			JSONObject jsonObject = new JSONObject(msg);
-			Corpo corpo = new Corpo(jsonObject);
-			return corpo;
+			try 
+			{
+				JSONObject jsonObject = new JSONObject(msg);
+				Corpo corpo = new Corpo(jsonObject);
+				return corpo;
+			} catch (Exception e)
+			{
+				return getCorpoMedio(true);
+			}
+			
+		}		
+	}
+	public Corpo getCorpoMedio(Boolean reenvio) throws Exception
+	{
+		if (!reenvio.equals(Boolean.TRUE)) 
+		{
+			ps.println(ComunicacaoEnum.GETCORPOMEDIO);
+		}
+		
+		String msg = entrada.readLine();
+		
+		if (msg != null && msg.equals(ComunicacaoEnum.REENVIAR.toString()))
+		{
+			return getCorpoMedio(Boolean.TRUE);
+		}
+		
+		else
+		{
+			try 
+			{
+				JSONObject jsonObject = new JSONObject(msg);
+				Corpo corpo = new Corpo(jsonObject);
+				return corpo;
+			} catch (Exception e)
+			{
+				return getCorpoMedio(true);
+			}
 		}		
 	}
 	public void finalizarExecucao()

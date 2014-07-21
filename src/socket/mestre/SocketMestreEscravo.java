@@ -17,10 +17,12 @@ public class SocketMestreEscravo extends Thread
 	PrintStream ps;
 	private Long id;
 	private Mestre mestre;
-	
+	BufferedReader entrada;
 	public String getIp()
 	{
-		return socket.getLocalAddress().toString();
+		String ipPorta = socket.getRemoteSocketAddress().toString().replace("/", "");
+		int doisPts = ipPorta.indexOf(":");
+		return ipPorta.substring(0, doisPts);
 	}
 	public Long getIdSocket()
 	{
@@ -29,10 +31,9 @@ public class SocketMestreEscravo extends Thread
 	
 	public SocketMestreEscravo(Socket socket,Mestre mestre) throws IOException
 	{
-		id = Util.gerarId();
+		
 		this.socket = socket;
-		ps = new PrintStream(socket.getOutputStream());
-		ps.println(id);
+		ps = new PrintStream(socket.getOutputStream());		
 		this.mestre = mestre;
 	}
 	
@@ -43,7 +44,7 @@ public class SocketMestreEscravo extends Thread
 		super.run();
 		try
 		{
-			BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
+			entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
 			while(true)
 			{    
 				String msg = entrada.readLine();
@@ -59,6 +60,7 @@ public class SocketMestreEscravo extends Thread
 	{
 		if (ComunicacaoEnum.OIMESTRE.toString().equals(msg))
 		{
+			id = Long.parseLong(entrada.readLine());
 			System.out.println(msg);
 		}
 		else if (ComunicacaoEnum.FIMEXECUCAO.toString().equals(msg))

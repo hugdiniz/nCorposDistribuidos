@@ -215,12 +215,7 @@ public class ArvoreQuadLocal extends ArvoreQuad
 					norteOeste = pagina;
 					pagina.setPai(this);
 				}
-			}
-			else
-			{
-				System.err.println("Erro");
-				System.err.println("getY:" + getY() + " pagina.getY():" + pagina.getY() +  " getX:" +getX() + " pagina.getX():" +pagina.getX());
-			}
+			}			
 		}
 		
 	}

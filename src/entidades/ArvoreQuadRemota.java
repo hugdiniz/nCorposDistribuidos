@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import core.Constantes;
 import socket.escravo.SocketControle;
+import socket.escravo.SocketEscravoEscravo;
 
 public class ArvoreQuadRemota extends ArvoreQuad
 {
@@ -14,10 +15,9 @@ public class ArvoreQuadRemota extends ArvoreQuad
 	private String endereco;
 	private Corpo corpoMedio = null;
 	private Collection<Corpo> corpos = null;
-
-	public ArvoreQuadRemota(Long id, String endereco,Double xMaximo,Double xMinimo,Double yMaximo,Double yMinimo,ArvoreQuadLocal pai)
-	{
-		
+	SocketEscravoEscravo socketEscravoEscravo;
+	public ArvoreQuadRemota(Long id, String endereco,Double xMaximo,Double xMinimo,Double yMaximo,Double yMinimo,ArvoreQuadLocal pai) throws Exception
+	{		
 		if (endereco.contains("127.0.0.1"))
 		{
 			this.endereco = Constantes.enderecoMestre;
@@ -35,8 +35,10 @@ public class ArvoreQuadRemota extends ArvoreQuad
 		this.yMaximo = yMaximo;
 		this.yMinimo = yMinimo;
 		this.pai = pai;
+		
+	
 	}
-	public ArvoreQuadRemota(JSONObject jsonObject,ArvoreQuadLocal pai)
+	public ArvoreQuadRemota(JSONObject jsonObject,ArvoreQuadLocal pai) throws Exception
 	{
 		Double xMaximo,xMinimo,yMaximo,yMinimo;
 		String endereco;
@@ -57,6 +59,8 @@ public class ArvoreQuadRemota extends ArvoreQuad
 		this.yMaximo = yMaximo;
 		this.yMinimo = yMinimo;
 		this.pai = pai;
+		
+		socketEscravoEscravo = SocketControle.getInstance().getSocketEscravoEscravo(this.id, this.endereco);
 	}
 	
 	@Override
